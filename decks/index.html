@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Інтерактивні презентації · Taiyo Asano</title>
+<meta name="description" content="Кейс: презентація як один самодостатній HTML-файл — вшиті шрифти, робота офлайн, керування стрілками та інтерактивні слайди. Приклад — доповідь для UATEFL Lviv 2026.">
+<meta name="author" content="Taiyo Asano">
+<meta name="theme-color" content="#050807">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://taiyo.is-a.dev/decks/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:site_name" content="Taiyo Asano">
+<meta property="og:title" content="Інтерактивні презентації">
+<meta property="og:description" content="Презентація як один самодостатній HTML-файл: вшиті шрифти, робота офлайн, інтерактивні слайди. Приклад — доповідь для UATEFL Lviv 2026.">
+<meta property="og:url" content="https://taiyo.is-a.dev/decks/">
+<meta property="og:image" content="https://taiyo.is-a.dev/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Інтерактивні презентації">
+<meta name="twitter:description" content="Доповідь, що працює з флешки: один HTML-файл, вшиті шрифти, інтерактивні слайди.">
+<meta name="twitter:image" content="https://taiyo.is-a.dev/assets/img/og.png">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/layout.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<script type="module" src="/assets/js/site.js"></script>
+</head>
+<body>
+<canvas id="bg-grid" aria-hidden="true"></canvas>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+<div class="page-wipe" aria-hidden="true"></div>
+
+<a class="u-sr" href="#approach">Перейти до вмісту</a>
+
+<header class="nav" data-nav>
+  <div class="nav__inner">
+    <a class="nav__logo" href="/" data-page-link aria-label="Taiyo — на головну">
+      <svg viewBox="0 0 2000 2000" aria-hidden="true"><polygon points="1000,510 1420,755 1420,1000 1108,818 1108,1364 892,1490 892,818 580,1000 580,755" fill="currentColor"/></svg>
+      TAIYO
+    </a>
+    <nav class="nav__links" data-menu aria-label="Основна навігація">
+      <a href="/#about" data-page-link>Про мене</a>
+      <a href="/#skills" data-page-link>Напрями</a>
+      <a href="/#work" data-page-link>Проєкти</a>
+      <a href="/#contact" data-page-link>Контакти</a>
+    </nav>
+    <a class="btn btn--sm" data-magnetic href="/#contact" data-page-link>Замовити <span aria-hidden="true">→</span></a>
+    <button class="nav__burger" data-menu-toggle aria-expanded="false" aria-label="Відкрити меню">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <section class="case">
+    <div class="u-container">
+      <a class="case__back u-mono" href="/" data-page-link><span aria-hidden="true">←</span> Всі проєкти</a>
+      <p class="u-mono u-eyebrow" data-reveal>Презентації · 2026</p>
+      <h1 data-type-in>Інтерактивні презентації</h1>
+      <p class="case__lead" data-reveal data-reveal-delay="1">
+        Доповідь, що працює з флешки. Без інтернету, без PowerPoint, без «а де тут
+        мій шрифт» за п'ять хвилин до виступу.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="approach">
+    <div class="u-container">
+      <p class="u-mono u-eyebrow" data-reveal>Підхід</p>
+      <h2 class="section__title" data-reveal data-reveal-delay="1">Один файл — уся доповідь</h2>
+      <ol class="approach">
+        <li data-reveal data-reveal-delay="1"><strong>Один HTML-файл.</strong> Нічого не треба встановлювати й нікуди завантажувати — відкривається подвійним кліком у будь-якому браузері.</li>
+        <li data-reveal data-reveal-delay="2"><strong>Шрифти вшиті у base64.</strong> Типографіка виглядає однаково на чужому ноутбуці, проєкторі та телефоні.</li>
+        <li data-reveal data-reveal-delay="3"><strong>Керування стрілками.</strong> Пульт-клікер працює так само, як у звичайній презентації.</li>
+        <li data-reveal data-reveal-delay="4"><strong>Інтерактивні слайди й гайд для доповідача.</strong> Окремий документ із таймінгом, репліками та підказками, коли залучати аудиторію.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="u-container">
+      <p class="u-mono u-eyebrow" data-reveal>Кейс</p>
+      <h2 class="section__title" data-reveal data-reveal-delay="1">Play, Emotions &amp; AI</h2>
+      <p class="section__lead" data-reveal data-reveal-delay="2">
+        «Teaching English to Young Learners Through Play, Emotions, and AI:
+        Building Future-Ready Classrooms» — доповідь для UATEFL Conference
+        Lviv 2026. Десять слайдів, близько вісімнадцяти хвилин, два інтерактивні
+        моменти із залом.
+      </p>
+      <figure class="shot" data-reveal data-reveal-delay="3">
+        <img src="/assets/img/deck-shot.jpg" width="1100" height="688" loading="lazy"
+             alt="Титульний слайд презентації Play, Emotions and AI із заголовком та даними доповідачки">
+        <figcaption class="u-muted">Титульний слайд. Гортається стрілками, працює без інтернету.</figcaption>
+      </figure>
+      <p class="credit u-mono" data-reveal data-reveal-delay="4">
+        Замовниця — Olena Kobzar. Матеріали публікуються за її згодою.
+      </p>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="u-container">
+      <h2 data-reveal>Потрібна презентація, яку запам'ятають?</h2>
+      <p data-reveal data-reveal-delay="1">Напиши — обговоримо тему, таймінг і те, як залучити зал.</p>
+      <div class="cta__actions" data-reveal data-reveal-delay="2">
+        <a class="btn btn--primary" data-magnetic href="/#contact" data-page-link>Контакти <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="u-container footer__inner">
+    <p><strong>Taiyo Asano</strong> · taiyo.is-a.dev</p>
+    <p class="u-mono u-muted">2026</p>
+    <p class="u-muted footer__note">Хоститься на GitHub Pages. Домен від is-a.dev.</p>
+  </div>
+</footer>
+</body>
+</html>

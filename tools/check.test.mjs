@@ -46,6 +46,55 @@ test('no unapproved external references', () => {
   }
 });
 
+test('every page carries required metadata', () => {
+  for (const file of pages()) {
+    const html = readHtml(file, ROOT);
+    assert.match(html, /<html[^>]+lang="uk"/, `${file}: lang`);
+    assert.match(html, /<title>[^<]{10,}<\/title>/, `${file}: title`);
+    assert.match(html, /name="description"\s+content="[^"]{40,}"/, `${file}: description`);
+    assert.match(html, /property="og:image"\s+content="[^"]+"/, `${file}: og:image`);
+    assert.match(html, /name="twitter:card"/, `${file}: twitter:card`);
+    assert.match(html, /rel="icon"/, `${file}: favicon`);
+  }
+});
+
+test('every img has non-empty alt or is decorative', () => {
+  for (const file of pages()) {
+    for (const tag of readHtml(file, ROOT).match(/<img\b[^>]*>/g) ?? []) {
+      const decorative = tag.includes('aria-hidden="true"') && /alt=""/.test(tag);
+      assert.ok(decorative || /alt="[^"]+"/.test(tag), `${file}: ${tag.slice(0, 70)}`);
+    }
+  }
+});
+
+test('external links open safely', () => {
+  for (const file of pages()) {
+    for (const tag of readHtml(file, ROOT).match(/<a\b[^>]*>/g) ?? []) {
+      if (!/href="https?:\/\//.test(tag)) continue;
+      assert.match(tag, /target="_blank"/, `${file}: external link needs target: ${tag.slice(0, 70)}`);
+      assert.match(tag, /rel="noopener"/, `${file}: external link needs rel=noopener: ${tag.slice(0, 70)}`);
+    }
+  }
+});
+
+test('sitemap lists every indexable page', () => {
+  const xml = readFileSync(join(ROOT, 'sitemap.xml'), 'utf8');
+  for (const path of ['/', '/tano/', '/ftl/', '/decks/']) {
+    assert.ok(xml.includes(`https://taiyo.is-a.dev${path}</loc>`), `sitemap missing ${path}`);
+  }
+  assert.ok(!xml.includes('404'), 'sitemap must not list 404');
+});
+
+test('404 page is excluded from indexing', () => {
+  assert.match(readHtml('404.html', ROOT), /name="robots"\s+content="noindex"/);
+});
+
+test('decks page keeps the Olena Kobzar consent credit', () => {
+  const html = readHtml('decks/index.html', ROOT);
+  assert.match(html, /Olena Kobzar/);
+  assert.match(html, /за її згодою/);
+});
+
 const CSS_DIR = join(ROOT, 'assets/css');
 const css = (name) => readFileSync(join(CSS_DIR, name), 'utf8');
 const allCss = () => readdirSync(CSS_DIR).map(css).join('\n');
