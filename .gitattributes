@@ -1,0 +1,4 @@
+* text=auto eol=lf
+CNAME text eol=lf
+*.png binary
+*.woff2 binary
