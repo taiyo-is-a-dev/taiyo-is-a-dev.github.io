@@ -1,0 +1,190 @@
+/* ─── Fonts (self-hosted, latin + cyrillic subsets) ─────────────────────── */
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/jetbrains-mono-400-cyrillic.woff2') format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/jetbrains-mono-400-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/assets/fonts/jetbrains-mono-500-cyrillic.woff2') format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/assets/fonts/jetbrains-mono-500-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/manrope-400-cyrillic.woff2') format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/manrope-400-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:500;font-display:swap;src:url('/assets/fonts/manrope-500-cyrillic.woff2') format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:500;font-display:swap;src:url('/assets/fonts/manrope-500-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:700;font-display:swap;src:url('/assets/fonts/manrope-700-cyrillic.woff2') format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:700;font-display:swap;src:url('/assets/fonts/manrope-700-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Unbounded';font-style:normal;font-weight:600;font-display:swap;src:url('/assets/fonts/unbounded-600-cyrillic.woff2') format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;}
+@font-face{font-family:'Unbounded';font-style:normal;font-weight:600;font-display:swap;src:url('/assets/fonts/unbounded-600-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Unbounded';font-style:normal;font-weight:800;font-display:swap;src:url('/assets/fonts/unbounded-800-cyrillic.woff2') format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;}
+@font-face{font-family:'Unbounded';font-style:normal;font-weight:800;font-display:swap;src:url('/assets/fonts/unbounded-800-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+
+/* ─── Tokens ────────────────────────────────────────────────────────────── */
+:root{
+  --bg:#050807;
+  --bg-soft:#07110C;
+  --surface:rgba(255,255,255,.04);
+  --surface-hi:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);
+  --border-hi:rgba(255,255,255,.18);
+  --text:#E8F2EC;
+  --muted:#8FA398;
+  --green:#57C75C;
+  --green-hi:#6EE787;
+
+  --green-soft:rgba(87,199,92,.12);
+  --green-line:rgba(87,199,92,.32);
+  --glow:0 0 44px rgba(87,199,92,.26);
+  --glow-sm:0 0 22px rgba(87,199,92,.22);
+
+  --font-display:'Unbounded',system-ui,sans-serif;
+  --font-body:'Manrope',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'Cascadia Mono',monospace;
+
+  --step--1:clamp(.76rem,.73rem + .16vw,.84rem);
+  --step-0:clamp(1rem,.96rem + .2vw,1.08rem);
+  --step-1:clamp(1.16rem,1.06rem + .5vw,1.42rem);
+  --step-2:clamp(1.7rem,1.35rem + 1.6vw,2.7rem);
+  --step-3:clamp(2.2rem,1.6rem + 2.9vw,4rem);
+  --step-4:clamp(2.6rem,1.35rem + 5.9vw,6.6rem);
+
+  --space:8px;
+  --container:1280px;
+  --radius:20px;
+  --radius-sm:12px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-io:cubic-bezier(.65,0,.35,1);
+  --nav-h:72px;
+
+  color-scheme:dark;
+}
+
+/* ─── Reset ─────────────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;}
+
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:calc(var(--nav-h) + var(--space)*2);
+  -webkit-text-size-adjust:100%;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:var(--step-0);
+  line-height:1.65;
+  font-synthesis-weight:none;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+
+img,svg,canvas,video{display:block;max-width:100%;}
+img{height:auto;}
+a{color:inherit;text-decoration:none;}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
+ul,ol,dl,dd{margin:0;padding:0;list-style:none;}
+figure{margin:0;}
+
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  font-weight:800;
+  line-height:1.04;
+  letter-spacing:-.025em;
+  margin:0;
+  text-wrap:balance;
+}
+h1{font-size:var(--step-4);}
+h2{font-size:var(--step-3);}
+h3{font-size:var(--step-1);letter-spacing:-.015em;}
+
+p{margin:0 0 calc(var(--space)*2);text-wrap:pretty;}
+p:last-child{margin-bottom:0;}
+strong{font-weight:700;}
+
+::selection{background:var(--green);color:var(--bg);}
+
+:focus-visible{
+  outline:2px solid var(--green-hi);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+/* ─── Utilities ─────────────────────────────────────────────────────────── */
+.u-container{
+  width:min(100% - calc(var(--space)*5),var(--container));
+  margin-inline:auto;
+}
+
+.u-mono{
+  font-family:var(--font-mono);
+  font-size:var(--step--1);
+  font-weight:500;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  line-height:1.5;
+}
+
+.u-eyebrow{
+  color:var(--green);
+  display:flex;
+  align-items:center;
+  gap:calc(var(--space)*1.5);
+  margin:0 0 calc(var(--space)*2);
+}
+.u-eyebrow::before{
+  content:'';
+  width:calc(var(--space)*4);
+  height:1px;
+  background:var(--green);
+  flex:none;
+}
+
+.u-muted{color:var(--muted);}
+
+.u-outline{
+  color:transparent;
+  -webkit-text-stroke:1.6px var(--green);
+  paint-order:stroke fill;
+}
+@supports not (-webkit-text-stroke:1px red){
+  .u-outline{color:var(--green);}
+}
+
+.u-lead{
+  font-size:var(--step-1);
+  color:var(--muted);
+  max-width:58ch;
+}
+
+.u-sr{
+  position:absolute;
+  width:1px;height:1px;
+  padding:0;margin:-1px;
+  overflow:hidden;
+  clip-path:inset(50%);
+  white-space:nowrap;
+}
+.u-sr:focus{
+  position:fixed;
+  top:calc(var(--space)*2);
+  left:calc(var(--space)*2);
+  width:auto;height:auto;
+  margin:0;padding:calc(var(--space)*1.5) calc(var(--space)*3);
+  clip-path:none;
+  background:var(--green);
+  color:var(--bg);
+  border-radius:999px;
+  font-family:var(--font-mono);
+  font-size:var(--step--1);
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  z-index:100;
+}
+
+/* ─── Reduced motion ────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
