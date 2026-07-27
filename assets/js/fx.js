@@ -250,10 +250,8 @@ export function initCursor() {
   const ring = document.querySelector('.cursor-ring');
   if (!dot || !ring) return;
 
-  if (reduced() || narrow() || coarse()) {
-    document.body.classList.add('no-cursor-fx');
-    return;
-  }
+  if (reduced() || narrow() || coarse()) return;
+  document.body.classList.add('cursor-fx');
 
   let x = innerWidth / 2;
   let y = innerHeight / 2;

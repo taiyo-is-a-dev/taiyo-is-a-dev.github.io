@@ -123,7 +123,10 @@ export function initCounters() {
       const el = entry.target;
       io.unobserve(el);
 
+      // The markup ships the final number so it survives a JS failure;
+      // only zero it once we know the animation is about to run.
       const target = Number(el.dataset.counter) || 0;
+      el.textContent = '0';
       const start = performance.now();
 
       const step = (now) => {

@@ -8,13 +8,17 @@
   --ty:0;
 }
 
-/* ═══ Motion states (driven by motion.js) ════════════════════════════════ */
-[data-reveal]{
+/* ═══ Motion states (driven by motion.js) ════════════════════════════════
+   Content is hidden ONLY once the inline head script proves scripting is
+   on (.js), and it is force-shown if the module never boots (.js-stalled).
+   Without both guards a JS failure would render a blank page.          */
+.js [data-reveal]{
   opacity:0;
   transform:translateY(26px);
   transition:opacity .8s var(--ease),transform .8s var(--ease);
 }
-[data-reveal].is-in{opacity:1;transform:none;}
+.js [data-reveal].is-in,
+.js-stalled [data-reveal]{opacity:1;transform:none;}
 
 [data-type-in] .ch{
   display:inline-block;
@@ -27,7 +31,7 @@
 @keyframes ch-in{to{opacity:1;transform:none;filter:blur(0);}}
 
 @media (prefers-reduced-motion:reduce){
-  [data-reveal]{opacity:1;transform:none;}
+  .js [data-reveal]{opacity:1;transform:none;}
   [data-type-in] .ch{opacity:1;transform:none;filter:none;animation:none;}
 }
 
@@ -206,7 +210,7 @@
 }
 .card--tano .card__body{max-width:640px;padding:calc(var(--space)*7);}
 .card__body p{color:var(--muted);margin:0;}
-.card__logo{width:44px;height:44px;color:var(--green);filter:drop-shadow(var(--glow-sm));}
+.card__logo{display:block;width:44px;height:44px;color:var(--green);filter:drop-shadow(var(--glow-sm));}
 .card__logo svg{width:100%;height:100%;}
 .card--tano h3{font-size:var(--step-2);}
 

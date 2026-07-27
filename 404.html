@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script>
+  document.documentElement.classList.add('js');
+  window.__taiyoFailsafe = setTimeout(function () {
+    document.documentElement.classList.add('js-stalled');
+  }, 2500);
+</script>
 <title>Сторінку не знайдено · Taiyo Asano</title>
 <meta name="description" content="Такої сторінки на taiyo.is-a.dev немає. Повернись на головну — там проєкти, напрями роботи та контакти.">
 <meta name="robots" content="noindex">

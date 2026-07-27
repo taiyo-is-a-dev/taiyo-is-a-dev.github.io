@@ -153,6 +153,10 @@ export function initMobileMenu() {
    Each module is isolated: a broken effect must never take navigation
    down with it.                                                      */
 function boot() {
+  // The inline head script armed a failsafe that force-shows revealed
+  // content if this module never got here. It did, so disarm it.
+  clearTimeout(window.__taiyoFailsafe);
+
   const modules = [
     initBgGrid, initHeroPoly, initCursor,
     initReveal, initTilt, initMagnetic, initCounters, initTypeIn,

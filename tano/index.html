@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script>
+  document.documentElement.classList.add('js');
+  window.__taiyoFailsafe = setTimeout(function () {
+    document.documentElement.classList.add('js-stalled');
+  }, 2500);
+</script>
 <title>TANO — Discord-бот-екосистема · Taiyo Asano</title>
 <meta name="description" content="Кейс TANO: п'ятнадцять систем в одному Discord-боті — штучний інтелект, музика на Lavalink, модерація, тікети, рівні, node-конструктор Builder і веб-панель на Discord OAuth2.">
 <meta name="author" content="Taiyo Asano">
@@ -66,8 +72,8 @@
         що зазвичай доводиться збирати з п'яти різних ботів.
       </p>
       <dl class="stats" data-reveal data-reveal-delay="2">
-        <div><dt class="u-mono">Систем</dt><dd data-counter="15">0</dd></div>
-        <div><dt class="u-mono">Команд модерації</dt><dd data-counter="12">0</dd></div>
+        <div><dt class="u-mono">Систем</dt><dd data-counter="15">15</dd></div>
+        <div><dt class="u-mono">Команд модерації</dt><dd data-counter="12">12</dd></div>
         <div><dt class="u-mono">Сценаріїв Builder</dt><dd>∞</dd></div>
       </dl>
       <div class="card__actions" data-reveal data-reveal-delay="3">

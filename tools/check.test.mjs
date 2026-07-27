@@ -77,6 +77,29 @@ test('external links open safely', () => {
   }
 });
 
+test('a JS failure cannot blank the page', () => {
+  for (const file of pages()) {
+    const html = readHtml(file, ROOT);
+    assert.match(html, /classList\.add\('js'\)/, `${file}: missing the inline js flag`);
+    assert.match(html, /__taiyoFailsafe/, `${file}: missing the reveal failsafe`);
+  }
+  const comp = readFileSync(join(ROOT, 'assets/css/components.css'), 'utf8');
+  assert.match(comp, /\.js \[data-reveal\]\{\s*opacity:0/, 'reveal must hide only under .js');
+  assert.match(comp, /\.js-stalled \[data-reveal\]/, 'missing the .js-stalled escape hatch');
+  const layout = readFileSync(join(ROOT, 'assets/css/layout.css'), 'utf8');
+  assert.ok(!/no-cursor-fx/.test(layout), 'cursor hiding must be opt-in, not opt-out');
+  assert.match(layout, /body\.cursor-fx[\s\S]{0,80}cursor:none/, 'cursor:none must require .cursor-fx');
+});
+
+test('counters ship their final value in markup', () => {
+  for (const file of pages()) {
+    for (const tag of readHtml(file, ROOT).match(/<dd data-counter="\d+">\d+<\/dd>/g) ?? []) {
+      const [, attr, text] = /data-counter="(\d+)">(\d+)</.exec(tag);
+      assert.equal(text, attr, `${file}: ${tag} must render ${attr} without JS`);
+    }
+  }
+});
+
 test('sitemap lists every indexable page', () => {
   const xml = readFileSync(join(ROOT, 'sitemap.xml'), 'utf8');
   for (const path of ['/', '/tano/', '/ftl/', '/decks/']) {

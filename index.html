@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script>
+  document.documentElement.classList.add('js');
+  window.__taiyoFailsafe = setTimeout(function () {
+    document.documentElement.classList.add('js-stalled');
+  }, 2500);
+</script>
 <title>Taiyo Asano — Discord-боти, веб, Unity, Blender</title>
 <meta name="description" content="Портфоліо Таійо: багатомодульні Discord-боти з веб-панелями, сайти під ключ, ігри на Unity та 3D у Blender. Від першого полігону до продакшн-деплою.">
 <meta name="author" content="Taiyo Asano">
@@ -166,8 +172,8 @@
             <p>Discord-бот, який виріс в екосистему: штучний інтелект, музика, модерація,
                тікети, рівні, конструктор повідомлень і власна веб-панель.</p>
             <dl class="stats">
-              <div><dt class="u-mono">Систем</dt><dd data-counter="15">0</dd></div>
-              <div><dt class="u-mono">Команд модерації</dt><dd data-counter="12">0</dd></div>
+              <div><dt class="u-mono">Систем</dt><dd data-counter="15">15</dd></div>
+              <div><dt class="u-mono">Команд модерації</dt><dd data-counter="12">12</dd></div>
               <div><dt class="u-mono">Сценаріїв</dt><dd>∞</dd></div>
             </dl>
             <ul class="chips u-mono">

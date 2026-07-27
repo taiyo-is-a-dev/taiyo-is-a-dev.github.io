@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script>
+  document.documentElement.classList.add('js');
+  window.__taiyoFailsafe = setTimeout(function () {
+    document.documentElement.classList.add('js-stalled');
+  }, 2500);
+</script>
 <title>Сайт [redacted] [redacted] �школи� · Taiyo Asano</title>
 <meta name="description" content="Кейс: перенесення сайту [redacted] наукового [redacted] �школи� з Joomla на сучасну статику — швидше завантаження, адаптивність і жодного CMS-навантаження.">
 <meta name="author" content="Taiyo Asano">
