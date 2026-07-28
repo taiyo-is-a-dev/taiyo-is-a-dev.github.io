@@ -19,13 +19,20 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const pages = () => htmlFiles(ROOT);
 
 test('required root files exist', () => {
-  for (const f of ['.nojekyll', 'CNAME', 'robots.txt']) {
+  for (const f of ['.nojekyll', 'robots.txt']) {
     assert.ok(existsSync(join(ROOT, f)), `missing ${f}`);
   }
 });
 
-test('CNAME points at taiyo.is-a.dev', () => {
-  assert.equal(readFileSync(join(ROOT, 'CNAME'), 'utf8').trim(), 'taiyo.is-a.dev');
+// Two-phase deploy. A CNAME file makes Pages 301 every URL on
+// <user>.github.io to the custom domain, so while taiyo.is-a.dev does not
+// resolve yet the site must ship WITHOUT one — otherwise the is-a.dev
+// reviewers follow a dead preview link. Settings -> Pages recreates the file
+// once the domain PR merges; from then on this asserts it stays correct.
+test('CNAME, if present, points at taiyo.is-a.dev', () => {
+  const cname = join(ROOT, 'CNAME');
+  if (!existsSync(cname)) return;
+  assert.equal(readFileSync(cname, 'utf8').trim(), 'taiyo.is-a.dev');
 });
 
 test('every local reference resolves on disk', () => {
