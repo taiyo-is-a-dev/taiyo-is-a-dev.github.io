@@ -529,3 +529,39 @@
   .module{padding-left:calc(var(--space)*4);}
   .tile{padding:calc(var(--space)*3);gap:calc(var(--space)*.5) calc(var(--space)*2);}
 }
+
+/* ═══ SPBT bridge ════════════════════════════════════════════════════════ */
+.spbt{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:calc(var(--space)*4) calc(var(--space)*8);
+  padding:calc(var(--space)*7);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:var(--surface);
+  overflow:hidden;
+}
+.spbt::before{
+  content:'';
+  position:absolute;
+  inset:0 auto 0 0;
+  width:3px;
+  background:linear-gradient(180deg,var(--green),var(--green-hi));
+  box-shadow:var(--glow-sm);
+}
+.spbt__copy{display:flex;flex-direction:column;gap:calc(var(--space)*2);max-width:62ch;}
+.spbt__copy p{margin:0;color:var(--muted);}
+.spbt__title{
+  font-size:var(--step-2);
+  margin:0;
+  text-wrap:balance;
+}
+.spbt__copy .chips{margin-top:calc(var(--space)*1);}
+.spbt__cta{display:flex;justify-content:flex-end;}
+
+@media (max-width:900px){
+  .spbt{grid-template-columns:1fr;padding:calc(var(--space)*5);}
+  .spbt__cta{justify-content:flex-start;}
+}

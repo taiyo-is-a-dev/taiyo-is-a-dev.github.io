@@ -8,6 +8,7 @@ export const ALLOWED_HOSTS = [
   'tano.pp.ua',
   '[redacted]',
   'taiyo.is-a.dev',
+  'spbt.pp.ua',
   'www.w3.org',
 ];
 
