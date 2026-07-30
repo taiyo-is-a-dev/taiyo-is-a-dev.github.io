@@ -594,13 +594,15 @@
 
 @media (prefers-reduced-motion:no-preference) and (min-width:760px){
   .pjtrack{position:relative;height:300svh;}
+  /* The stage stays a block on purpose. As a flex container it would treat
+     the row as a flex item, and flex items shrink by default — `width:300%`
+     collapsed back to 100% and all three panels squeezed onto one screen.
+     Vertical centring lives on the panels instead. */
   .pjtrack__stage{
     position:sticky;
     top:0;
     height:100svh;
     overflow:hidden;
-    display:flex;
-    align-items:center;
   }
   .pjtrack__row{
     /* Declared here with a safe default: JS overwrites it every frame, but
