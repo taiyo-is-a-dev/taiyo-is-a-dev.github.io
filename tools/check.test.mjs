@@ -59,7 +59,12 @@ test('every page carries required metadata', () => {
     // Ukrainian everywhere except the English twin under /en/.
     const wantLang = file.startsWith('en/') ? 'en' : 'uk';
     assert.match(html, new RegExp(`<html[^>]+lang="${wantLang}"`), `${file}: lang=${wantLang}`);
-    assert.match(html, /<title>[^<]{10,}<\/title>/, `${file}: title`);
+    /* Three characters, not ten. The tab titles are deliberately terse —
+       "dev/tano", "SPBT" — because a browser tab truncates anything longer into
+       noise; the descriptive form lives in og:title and the meta description,
+       which is what a search result and a social card actually show. The floor
+       exists only to catch an empty or placeholder title. */
+    assert.match(html, /<title>[^<]{3,}<\/title>/, `${file}: title`);
     assert.match(html, /name="description"\s+content="[^"]{40,}"/, `${file}: description`);
     assert.match(html, /property="og:image"\s+content="[^"]+"/, `${file}: og:image`);
     assert.match(html, /name="twitter:card"/, `${file}: twitter:card`);
