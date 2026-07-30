@@ -209,7 +209,6 @@ export function initHeroGlyph() {
   const canvas = document.getElementById('hero-glyph');
   if (!canvas) return;
 
-  const card = canvas.closest('[data-tilt]') ?? canvas.parentElement;
   const DEPTH = 46;      // slab thickness in model units
   const FOCAL = 520;     // perspective distance
   const PUSH = 92;       // cursor influence radius, px
@@ -221,7 +220,11 @@ export function initHeroGlyph() {
   let ry = 0;
   let rx = 0;
   const order = [];
-  const pointer = { x: 0, y: 0, on: false };
+  /* nx/ny are the pointer in -1..1 across the canvas. The object reads them
+     directly rather than borrowing data-tilt's --tx/--ty: tilt also applies a
+     CSS rotate to its element, which would skew the canvas itself now that the
+     glyph floats without a card around it. */
+  const pointer = { x: 0, y: 0, nx: 0, ny: 0, on: false };
 
   function size() {
     ({ ctx, w, h } = fit(canvas));
@@ -244,20 +247,24 @@ export function initHeroGlyph() {
     const r = canvas.getBoundingClientRect();
     pointer.x = e.clientX - r.left;
     pointer.y = e.clientY - r.top;
+    pointer.nx = (pointer.x / r.width) * 2 - 1;
+    pointer.ny = (pointer.y / r.height) * 2 - 1;
     pointer.on = true;
   }, { passive: true });
-  canvas.addEventListener('pointerleave', () => { pointer.on = false; });
+  canvas.addEventListener('pointerleave', () => {
+    pointer.on = false;
+    pointer.nx = 0;
+    pointer.ny = 0;
+  });
 
   function render(t) {
     const still = reduced();
     const ms = t * 0.001;
 
-    // Aim: follow the card's tilt (already driven by the pointer) and drift
-    // slowly when nobody is hovering, so the object never looks frozen.
-    const tx = Number.parseFloat(card?.style.getPropertyValue('--tx')) || 0;
-    const ty = Number.parseFloat(card?.style.getPropertyValue('--ty')) || 0;
-    const aimY = tx ? tx * 0.85 : Math.sin(ms * 0.22) * 0.42;
-    const aimX = ty ? -ty * 0.6 : Math.sin(ms * 0.17) * 0.14;
+    // Aim: turn toward the pointer, and drift slowly when nobody is hovering
+    // so the object never looks frozen.
+    const aimY = pointer.on ? pointer.nx * 0.62 : Math.sin(ms * 0.22) * 0.42;
+    const aimX = pointer.on ? -pointer.ny * 0.40 : Math.sin(ms * 0.17) * 0.14;
 
     if (still) {
       ry = 0.36;
