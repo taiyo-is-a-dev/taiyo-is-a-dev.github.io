@@ -51,7 +51,7 @@
       <a href="/#projects" data-page-link>Проєкти</a>
       <a href="/#contact" data-page-link>Контакти</a>
     </nav>
-    <a class="btn btn--sm" data-magnetic href="https://[redacted]" target="_blank" rel="noopener">[redacted] <span aria-hidden="true">↗</span></a>
+    <a class="btn btn--sm" data-magnetic href="/#contact" data-page-link>Контакти <span aria-hidden="true">→</span></a>
     <button class="nav__burger" data-menu-toggle aria-expanded="false" aria-label="Відкрити меню">
       <span></span><span></span>
     </button>
@@ -69,8 +69,12 @@
         [redacted] науковий [redacted] �школи. Сайт, яким щодня
         користуються учні, батьки та вчителі — і який до цього жив на Joomla.
       </p>
+      <!-- Живого посилання свідомо немає, доки сайт не запущено: відправляти
+           відвідувача на адресу, за якою поки нічого немає, гірше, ніж не
+           давати посилання взагалі. Домен прибрано і з ALLOWED_HOSTS у
+           tools/check.mjs, тому тест сам не пустить його назад передчасно. -->
       <div class="card__actions" data-reveal data-reveal-delay="2">
-        <a class="btn btn--primary" data-magnetic href="https://[redacted]" target="_blank" rel="noopener">Відкрити [redacted] <span aria-hidden="true">↗</span></a>
+        <p class="u-mono teaser__state">Статус: у розробці — посилання зʼявиться після запуску</p>
       </div>
     </div>
   </section>
@@ -120,7 +124,7 @@
       <p data-reveal data-reveal-delay="1">Пиши в Discord або на пошту — розберемося, що саме тобі треба.</p>
       <div class="cta__actions" data-reveal data-reveal-delay="2">
         <a class="btn btn--primary" data-magnetic href="/#contact" data-page-link>Контакти <span aria-hidden="true">→</span></a>
-        <a class="btn" data-magnetic href="https://[redacted]" target="_blank" rel="noopener">[redacted] <span aria-hidden="true">↗</span></a>
+        <a class="btn" data-magnetic href="https://spbt.pp.ua" target="_blank" rel="noopener">spbt.pp.ua <span aria-hidden="true">↗</span></a>
       </div>
     </div>
   </section>

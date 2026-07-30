@@ -56,7 +56,9 @@ test('no unapproved external references', () => {
 test('every page carries required metadata', () => {
   for (const file of pages()) {
     const html = readHtml(file, ROOT);
-    assert.match(html, /<html[^>]+lang="uk"/, `${file}: lang`);
+    // Ukrainian everywhere except the English twin under /en/.
+    const wantLang = file.startsWith('en/') ? 'en' : 'uk';
+    assert.match(html, new RegExp(`<html[^>]+lang="${wantLang}"`), `${file}: lang=${wantLang}`);
     assert.match(html, /<title>[^<]{10,}<\/title>/, `${file}: title`);
     assert.match(html, /name="description"\s+content="[^"]{40,}"/, `${file}: description`);
     assert.match(html, /property="og:image"\s+content="[^"]+"/, `${file}: og:image`);
@@ -109,10 +111,39 @@ test('counters ship their final value in markup', () => {
 
 test('sitemap lists every indexable page', () => {
   const xml = readFileSync(join(ROOT, 'sitemap.xml'), 'utf8');
-  for (const path of ['/', '/tano/', '/ftl/', '/decks/']) {
+  for (const path of ['/', '/en/', '/tano/', '/ftl/', '/decks/']) {
     assert.ok(xml.includes(`https://taiyo.is-a.dev${path}</loc>`), `sitemap missing ${path}`);
   }
   assert.ok(!xml.includes('404'), 'sitemap must not list 404');
+});
+
+/* Bilingual sites rot when one side is edited and the other is forgotten, so
+   the pairing is asserted rather than trusted. */
+test('the two language roots point at each other', () => {
+  for (const [file, self, other] of [
+    ['index.html', 'https://taiyo.is-a.dev/', 'https://taiyo.is-a.dev/en/'],
+    ['en/index.html', 'https://taiyo.is-a.dev/en/', 'https://taiyo.is-a.dev/'],
+  ]) {
+    const html = readHtml(file, ROOT);
+    assert.ok(html.includes(`rel="canonical" href="${self}"`), `${file}: canonical must be ${self}`);
+    assert.match(html, /hreflang="uk"\s+href="https:\/\/taiyo\.is-a\.dev\/"/, `${file}: uk alternate`);
+    assert.match(html, /hreflang="en"\s+href="https:\/\/taiyo\.is-a\.dev\/en\//, `${file}: en alternate`);
+    assert.match(html, /hreflang="x-default"/, `${file}: x-default alternate`);
+    // The pill must offer the other language as a real link, not a dead label.
+    assert.ok(html.includes(`class="lang__opt`), `${file}: language pill`);
+    assert.ok(other.endsWith('/en/')
+      ? /<a[^>]+class="lang__opt"[^>]+href="\/en\/"/.test(html)
+      : /<a[^>]+class="lang__opt"[^>]+href="\/"/.test(html),
+    `${file}: the other language must be a link`);
+  }
+});
+
+/* Both language roots must expose the same set of slides, or a visitor who
+   switches language silently loses a section. */
+test('both languages ship the same slides', () => {
+  const ids = (file) => [...readHtml(file, ROOT).matchAll(/<(?:section|article)[^>]+id="([\w-]+)"/g)]
+    .map((m) => m[1]).sort();
+  assert.deepEqual(ids('en/index.html'), ids('index.html'));
 });
 
 test('404 page is excluded from indexing', () => {

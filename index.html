@@ -20,6 +20,9 @@
 <meta name="theme-color" content="#050807">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://taiyo.is-a.dev/">
+<link rel="alternate" hreflang="uk" href="https://taiyo.is-a.dev/">
+<link rel="alternate" hreflang="en" href="https://taiyo.is-a.dev/en/">
+<link rel="alternate" hreflang="x-default" href="https://taiyo.is-a.dev/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="uk_UA">
 <meta property="og:site_name" content="Taiyo Asano">
@@ -54,12 +57,10 @@
 
     <a class="nav__who u-mono" href="#about" data-nav-link>WHO IS TAIYO</a>
 
-    <!-- Мова. EN поки без href: англійська сторінка ще не існує, а фальшиве
-         посилання зламало б і перевірку, і довіру відвідувача. -->
     <div class="lang" role="group" aria-label="Мова сайту">
       <span class="lang__slider" aria-hidden="true"></span>
-      <a class="lang__opt is-on" href="/" aria-current="true" lang="uk">UA</a>
-      <span class="lang__opt lang__opt--soon" lang="en" aria-disabled="true" title="Англійська версія у роботі">EN</span>
+      <a class="lang__opt is-on" href="/" aria-current="true" lang="uk" hreflang="uk">UA</a>
+      <a class="lang__opt" href="/en/" lang="en" hreflang="en">EN</a>
     </div>
 
     <a class="btn btn--sm btn--primary nav__cta" data-magnetic href="#contact">Контакти</a>
@@ -191,7 +192,7 @@
         </ul>
         <div class="card__actions" data-reveal data-reveal-delay="5">
           <a class="btn btn--primary" data-magnetic href="https://tano.pp.ua/" target="_blank" rel="noopener">tano.pp.ua <span aria-hidden="true">↗</span></a>
-          <a class="btn" data-magnetic href="https://tano.pp.ua/docs" target="_blank" rel="noopener">Документація <span aria-hidden="true">↗</span></a>
+          <a class="btn" data-magnetic href="/tano/" data-page-link>Кейс <span aria-hidden="true">→</span></a>
         </div>
       </div>
       <div class="pj__visual" data-reveal data-reveal-delay="2">
@@ -287,6 +288,9 @@
             Проєкт ще в роботі, тому посилання поки немає — не хочу відправляти
             вас на порожнє. Щойно запуститься, тут з'явиться адреса й повний кейс.
           </p>
+          <div class="card__actions">
+            <a class="btn" data-magnetic href="/ftl/" data-page-link>Кейс <span aria-hidden="true">→</span></a>
+          </div>
           <p class="u-mono teaser__state">Статус: у розробці</p>
         </div>
       </div>
@@ -304,7 +308,7 @@
           <p>Доповіді, що працюють у браузері без інтернету — один самодостатній
              HTML-файл із вшитими шрифтами. Приклад — «Play, Emotions &amp; AI»
              для UATEFL Lviv 2026. Замовниця — Olena Kobzar, публікується
-             за її згодою.</p>
+             за її згодою. <a href="/decks/" data-page-link>Кейс →</a></p>
         </article>
         <article class="minor__item" data-reveal data-reveal-delay="2">
           <h3>Unity</h3>

@@ -6,9 +6,12 @@ export const ALLOWED_HOSTS = [
   'discord.com',
   't.me',
   'tano.pp.ua',
-  '[redacted]',
   'taiyo.is-a.dev',
   'spbt.pp.ua',
+  /* [redacted] is deliberately absent. The school site is not launched, so no
+     page may link to it yet — dropping the host from this list turns that
+     decision into something the test suite enforces instead of something a
+     future edit can quietly undo. Add it back on launch day. */
   'www.w3.org',
 ];
 
