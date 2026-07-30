@@ -270,6 +270,12 @@
   grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));
   gap:calc(var(--space)*2.5);
 }
+/* The grid items are the <li>, but the card is the <a> inside them. Without
+   this the <li> stretched to the tallest card in the row while its <a> stayed
+   content-height, so a two-line label made one card visibly taller than the
+   rest. Filling the item makes every card the same size. */
+.tiles li{display:grid;}
+.tile{height:100%;align-content:start;}
 /* Contact card. Three layers do the work on hover: a gradient rim that
    fades in (`::before`), a green wash that rises from the bottom edge
    (`::after`), and the icon inverting to solid green. Both layers sit
