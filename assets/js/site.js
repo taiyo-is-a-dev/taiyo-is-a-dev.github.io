@@ -159,6 +159,8 @@ export function initProjectTrack() {
   const row = track?.querySelector('[data-pjrow]');
   if (!track || !row) return;
 
+  const stage = track.querySelector('.pjtrack__stage');
+  const panels = [...track.querySelectorAll('.pjslide')];
   const dots = [...(track.querySelector('[data-pjdots]')?.children ?? [])];
   const anchors = [...track.querySelectorAll('.pjtrack__anchor')];
   const horizontal = () => !reduced() && innerWidth >= 760;
@@ -205,6 +207,38 @@ export function initProjectTrack() {
     ticking = true;
     requestAnimationFrame(update);
   }, { passive: true });
+
+  /* The stage must never scroll itself — only the row's transform may move the
+     panels. CSS asks for `overflow:clip`, which is not a scroll container, but
+     a browser that only understands `hidden` still gives one, and then tabbing
+     to a link on an off-frame panel makes the browser scroll the stage sideways
+     to reveal it. That scroll stacks on top of the transform and nothing ever
+     resets it, so the track stays desynced for the session. Refuse it. The
+     guard is cheap and self-cancelling: writing 0 fires one more scroll event,
+     which the condition then ignores. */
+  if (stage) {
+    stage.addEventListener('scroll', () => {
+      if (stage.scrollLeft !== 0 || stage.scrollTop !== 0) {
+        stage.scrollLeft = 0;
+        stage.scrollTop = 0;
+      }
+    });
+  }
+
+  /* With the stage pinned, focusing a link on an off-frame panel would put the
+     caret somewhere invisible. Move the page to that panel's anchor instead, so
+     Tab walks the track the same way scrolling does. */
+  track.addEventListener('focusin', (e) => {
+    if (!horizontal()) return;
+    const panel = e.target instanceof Element ? e.target.closest('.pjslide') : null;
+    const anchor = panel ? anchors[panels.indexOf(panel)] : null;
+    if (!anchor) return;
+    const padTop = Number.parseFloat(
+      getComputedStyle(document.documentElement).scrollPaddingTop,
+    ) || 0;
+    const top = Math.round(anchor.getBoundingClientRect().top + scrollY - padTop);
+    if (Math.abs(scrollY - top) > 4) scrollTo({ top, behavior: 'smooth' });
+  });
 
   addEventListener('resize', update);
   update();

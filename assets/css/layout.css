@@ -219,9 +219,31 @@ body.cursor-fx button{cursor:none;}
 }
 .hero__title{margin:calc(var(--space)*2) 0 calc(var(--space)*4);}
 .hero__title span{display:block;}
-/* The two lines are designed as single lines; only hold that where they fit. */
+/* The two lines are designed as single lines; only hold that where they fit —
+   and above 1040px the copy column is 66% of a container that stops growing at
+   1280px, while --step-4 keeps climbing to its 70.4px cap. Those two curves
+   cross: Unbounded 800 renders the accent line at ~11.35em, so it wanted 800px
+   inside a 723px column at 1200px wide. The overflow did not merely stick out.
+   `.u-outline` paints its letters with `background-clip:text`, and a background
+   stops at the element box, so every glyph past the edge became invisible —
+   measured on the live portfolio: 77px of "що запускається." simply gone
+   between 1041px and 1319px.
+
+   Tying the size to the viewport across that band keeps the line inside the
+   column. The coefficient is measured, not guessed: at 1041px it yields 51px
+   against a 54px ceiling, and it holds for both this site's 16-character line
+   and the 14-character one on spbt.pp.ua, which is why this lives in the shared
+   stylesheet instead of one site's overrides.
+
+   The 4.25rem ceiling is deliberately below --step-4's 4.4rem. At the full size
+   the accent line measured 800px inside an 803px column — correct in Chromium,
+   but three pixels is not a margin, it is a coincidence, and the failure mode is
+   letters silently disappearing rather than anything visibly wrong. 4.25rem
+   costs 2.4px of display size at the widest screens and buys 30px of slack for
+   whatever a different platform's font metrics do. */
 @media (min-width:1041px){
   .hero__title span{white-space:nowrap;}
+  .hero__title{font-size:clamp(2.5rem,4.9vw,4.25rem);}
 }
 .hero__lead{
   font-size:var(--step-1);
@@ -503,8 +525,10 @@ body.cursor-fx button{cursor:none;}
      dead space above and below; letting sections size to their content is
      what makes the page read tightly. Snapping is already `proximity` here,
      so nothing needs a fixed height to work. */
-  .snap,
-  .pjslide{min-height:0;}
+  /* `.pjslide` is released in components.css instead, next to the 100svh
+     declaration it has to beat: that file loads after this one and the two
+     selectors are equally specific, so the release only works from there. */
+  .snap{min-height:0;}
   .section{padding:calc(var(--space)*9) 0;}
   .hero{
     min-height:0;

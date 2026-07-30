@@ -584,13 +584,12 @@
   /* The 230px floor exists to level a multi-column row. In one column it just
      makes four cards the tallest thing on the page. */
   .card--skill{min-height:0;}
-  /* The stamp was pinned to its clamp floor (95px per word, fixed gaps) while
-     the frame narrowed to ~264px, so it ran 1.5x wide and got sliced mid-word. */
-  .teaser__mark{
-    transform:rotate(-18deg) scale(1.05);
-    gap:calc(var(--space)*1) calc(var(--space)*2);
-  }
-  .teaser__mark i:nth-child(n+4){display:none;}
+  /* The phone guard for `.teaser__mark` used to live here and did nothing: the
+     base `.teaser__mark` rule is declared further down this same file, at equal
+     specificity, so its `scale(1.35)` won at every width and the stamp kept the
+     desktop size a 264px frame cannot hold. Measured at 390px: the applied
+     transform was still scale 1.35. It now sits directly after the teaser
+     block — see the end of this file. */
 }
 
 /* ═══ Horizontal project track ═══════════════════════════════════════════
@@ -616,6 +615,15 @@
 @supports not (height:100svh){
   .pjslide{min-height:100vh;}
 }
+/* layout.css carries the same release in its `max-width:900px` block, but this
+   file loads after it and both selectors are a single class, so the floor above
+   always won and stacked panels kept a full-viewport minimum they do not need.
+   Measured in a 700x1200 window: content 680-711px inside a forced 1200px
+   panel, i.e. ~390px of dead space split above and below each one, three times
+   over. Released here, where the declaration it contradicts actually lives. */
+@media (max-width:900px){
+  .pjslide{min-height:0;}
+}
 .pjtrack__anchor,
 .pjtrack__dots,
 .pjtrack__hint{display:none;}
@@ -630,7 +638,19 @@
     position:sticky;
     top:0;
     height:100svh;
+    /* `clip`, with `hidden` first for browsers that do not have it. `hidden`
+       hides the overflow but still makes the box a scroll container, and that
+       was a real bug: tabbing to a link on a panel that is currently off-frame
+       made the browser scroll the stage sideways to reveal it — measured
+       scrollLeft 905px on the second panel, 2297px on the third — and nothing
+       ever put it back. From then on the container's own scroll stacked on top
+       of the row's transform, so the track showed the wrong panel (or empty
+       background) for the rest of the session, with no scrollbar and no wheel
+       response to undo it. `clip` is not a scroll container at all, so it
+       cannot happen; site.js keeps a guard for the `hidden` fallback and moves
+       the page to the focused panel so keyboard users see what they focus. */
     overflow:hidden;
+    overflow:clip;
   }
   .pjtrack__row{
     /* Declared here with a safe default: JS overwrites it every frame, but
@@ -808,6 +828,17 @@
 }
 @media (max-width:900px){
   .teaser{grid-template-columns:1fr;}
+}
+/* The phone guard, kept after the declarations it overrides. The stamp is sized
+   from a clamp whose floor is 95px per word with fixed gaps, so as the frame
+   narrows to ~264px the words stop fitting and get sliced mid-word; dropping to
+   scale 1.05 and hiding all but three of them keeps the stamp legible. */
+@media (max-width:560px){
+  .teaser__mark{
+    transform:rotate(-18deg) scale(1.05);
+    gap:calc(var(--space)*1) calc(var(--space)*2);
+  }
+  .teaser__mark i:nth-child(n+4){display:none;}
 }
 
 /* ═══ Minor work ═════════════════════════════════════════════════════════
