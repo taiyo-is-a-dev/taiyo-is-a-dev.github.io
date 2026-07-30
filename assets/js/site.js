@@ -231,13 +231,22 @@ export function initProjectTrack() {
   track.addEventListener('focusin', (e) => {
     if (!horizontal()) return;
     const panel = e.target instanceof Element ? e.target.closest('.pjslide') : null;
-    const anchor = panel ? anchors[panels.indexOf(panel)] : null;
+    const i = panel ? panels.indexOf(panel) : -1;
+    const anchor = anchors[i];
     if (!anchor) return;
+    /* Which panel is on screen, not the exact scroll offset. Between 760px and
+       900px snapping is only `proximity`, so the page can rest mid-track — and
+       then a plain mouse click on an already-visible link (focusin fires for
+       those too) would jerk the page to the nearest anchor for no reason. */
+    const p = Number.parseFloat(row.style.getPropertyValue('--p')) || 0;
+    if (Math.round(p * (anchors.length - 1)) === i) return;
     const padTop = Number.parseFloat(
       getComputedStyle(document.documentElement).scrollPaddingTop,
     ) || 0;
-    const top = Math.round(anchor.getBoundingClientRect().top + scrollY - padTop);
-    if (Math.abs(scrollY - top) > 4) scrollTo({ top, behavior: 'smooth' });
+    scrollTo({
+      top: Math.round(anchor.getBoundingClientRect().top + scrollY - padTop),
+      behavior: 'smooth',
+    });
   });
 
   addEventListener('resize', update);
