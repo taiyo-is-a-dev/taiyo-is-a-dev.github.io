@@ -10,7 +10,13 @@
   }, 2500);
 </script>
 <title>dev/ftl</title>
-<meta name="description" content="Кейс: перенесення сайту [redacted] наукового [redacted] �школи� з Joomla на сучасну статику — швидше завантаження, адаптивність і жодного CMS-навантаження.">
+<!-- Ця сторінка свідомо майже порожня. Сайт школи не запущено, і поки це так,
+     звідси не має бути видно ні назви закладу, ні того, на чому він працював
+     раніше, ні знімків. Тут був блок «було / стало / що далі» з їхньою старою
+     CMS і незамазаний скріншот головної — тобто рівно те, чого не показують до
+     релізу. Лишився один рядок. На день запуску сюди повертається повний кейс:
+     історія в git, нічого не втрачено. -->
+<meta name="description" content="Оновлення дизайну сайту школи. Проєкт у розробці — подробиці й адреса зʼявляться після запуску.">
 <meta name="author" content="Taiyo Asano">
 <meta name="theme-color" content="#050807">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
@@ -18,13 +24,13 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="uk_UA">
 <meta property="og:site_name" content="Taiyo Asano">
-<meta property="og:title" content="Сайт [redacted] [redacted] �школи�">
-<meta property="og:description" content="Кейс: перенесення сайту �школи� з Joomla на сучасну статику — швидше завантаження, адаптивність і жодного CMS-навантаження.">
+<meta property="og:title" content="Сайт школи — у розробці">
+<meta property="og:description" content="Оновлення дизайну сайту школи. Проєкт у розробці — подробиці зʼявляться після запуску.">
 <meta property="og:url" content="https://taiyo.is-a.dev/ftl/">
 <meta property="og:image" content="https://taiyo.is-a.dev/assets/img/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Сайт [redacted] [redacted] �школи�">
-<meta name="twitter:description" content="Перенесення сайту �школи� з Joomla на сучасну статику — швидко, адаптивно, без CMS.">
+<meta name="twitter:title" content="Сайт школи — у розробці">
+<meta name="twitter:description" content="Оновлення дизайну сайту школи. Проєкт у розробці.">
 <meta name="twitter:image" content="https://taiyo.is-a.dev/assets/img/og.png">
 <link rel="stylesheet" href="/assets/css/base.css">
 <link rel="stylesheet" href="/assets/css/layout.css">
@@ -37,7 +43,7 @@
 <div class="cursor-ring" aria-hidden="true"></div>
 <div class="page-wipe" aria-hidden="true"></div>
 
-<a class="u-sr" href="#story">Перейти до вмісту</a>
+<a class="u-sr" href="#next">Перейти до вмісту</a>
 
 <header class="nav" data-nav>
   <div class="nav__inner">
@@ -54,62 +60,18 @@
   <section class="case">
     <div class="u-container">
       <a class="case__back u-mono" href="/#projects" data-page-link><span aria-hidden="true">←</span> Всі проєкти</a>
-      <p class="u-mono u-eyebrow" data-reveal>Веб · 2026</p>
+      <p class="u-mono u-eyebrow" data-reveal>На підході</p>
       <h1 data-type-in>Сайт школи</h1>
       <p class="case__lead" data-reveal data-reveal-delay="1">
-        [redacted] науковий [redacted] �школи. Сайт, яким щодня
-        користуються учні, батьки та вчителі — і який до цього жив на Joomla.
+        Оновлюю дизайн. Більше поки нічого — проєкт іще в роботі.
       </p>
-      <!-- Живого посилання свідомо немає, доки сайт не запущено: відправляти
-           відвідувача на адресу, за якою поки нічого немає, гірше, ніж не
-           давати посилання взагалі. Домен прибрано і з ALLOWED_HOSTS у
-           tools/check.mjs, тому тест сам не пустить його назад передчасно. -->
       <div class="card__actions" data-reveal data-reveal-delay="2">
-        <p class="u-mono teaser__state">Статус: у розробці — посилання зʼявиться після запуску</p>
+        <p class="u-mono teaser__state">Статус: у розробці — кейс і адреса зʼявляться після запуску</p>
       </div>
     </div>
   </section>
 
-  <section class="section section--soft" id="story">
-    <div class="u-container">
-      <p class="u-mono u-eyebrow" data-reveal>Задача</p>
-      <h2 class="section__title" data-reveal data-reveal-delay="1">Що змінилося</h2>
-      <div class="pairs">
-        <article class="pair" data-reveal data-reveal-delay="1">
-          <p class="pair__tag u-mono">Було</p>
-          <h3>Joomla, що старіла швидше за контент</h3>
-          <p>Верстка з іншої епохи, повільне завантаження на телефоні й панель адміністратора,
-             у якій нову новину треба було ще знайти як додати.</p>
-        </article>
-        <article class="pair" data-reveal data-reveal-delay="2">
-          <p class="pair__tag u-mono">Стало</p>
-          <h3>Статика без CMS-навантаження</h3>
-          <p>Сторінки віддаються миттєво, сітка адаптується під будь-який екран,
-             розділи згруповані так, як їх реально шукають.</p>
-        </article>
-        <article class="pair" data-reveal data-reveal-delay="3">
-          <p class="pair__tag u-mono">Що далі</p>
-          <h3>Архів новин і документів</h3>
-          <p>Поступове перенесення старих матеріалів, щоб нічого не загубилося
-             під час переходу.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="u-container">
-      <p class="u-mono u-eyebrow" data-reveal>Результат</p>
-      <h2 class="section__title" data-reveal data-reveal-delay="1">Нова головна</h2>
-      <figure class="shot" data-reveal data-reveal-delay="2">
-        <img src="/assets/img/ftl-shot.jpg" width="1100" height="688" loading="lazy"
-             alt="Головна сторінка сайту �школи�: бічне меню розділів, велика назва закладу та фотографії корпусів">
-        <figcaption class="u-muted">Бічна навігація по розділах, темна тема за замовчуванням, великі фотографії корпусів.</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <section class="cta">
+  <section class="cta" id="next">
     <div class="u-container">
       <h2 data-reveal>Потрібен сайт, який не соромно показати?</h2>
       <p data-reveal data-reveal-delay="1">Пиши в Discord або на пошту — розберемося, що саме тобі треба.</p>
