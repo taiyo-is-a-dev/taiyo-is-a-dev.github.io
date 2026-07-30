@@ -113,6 +113,79 @@ body.cursor-fx button{cursor:none;}
 .nav__logo svg{width:20px;height:20px;color:var(--green);transition:transform .5s var(--ease);}
 .nav__logo:hover svg{transform:translateY(-3px) rotate(-8deg);}
 
+/* Icon-only mark: no wordmark, so the bar stays quiet and the glyph reads
+   as a button rather than a title. */
+.nav__logo--icon{
+  gap:0;
+  margin-right:calc(var(--space)*1);
+  padding:calc(var(--space)*1);
+  border-radius:12px;
+  border:1px solid transparent;
+  transition:border-color .3s var(--ease),background .3s var(--ease);
+}
+.nav__logo--icon svg{width:24px;height:24px;}
+.nav__logo--icon:hover{border-color:var(--green-line);background:var(--green-soft);}
+
+.nav__who{
+  margin-right:auto;
+  font-size:var(--step--1);
+  font-weight:500;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--muted);
+  transition:color .3s var(--ease);
+  white-space:nowrap;
+}
+.nav__who:hover,
+.nav__who[aria-current="true"]{color:var(--text);}
+
+/* ── Language pill ──────────────────────────────────────────────────────
+   Two labels in a capsule with a slider behind the active one. The slider
+   is a sibling, positioned by :has() so no JS is needed; browsers without
+   :has() simply show the active label brighter, which is still correct. */
+.lang{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  padding:3px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--surface);
+}
+.lang__opt{
+  position:relative;
+  z-index:1;
+  padding:calc(var(--space)*.75) calc(var(--space)*1.75);
+  border-radius:999px;
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:.1em;
+  color:var(--muted);
+  transition:color .3s var(--ease);
+}
+.lang__opt.is-on{color:var(--text);}
+.lang__opt--soon{cursor:not-allowed;opacity:.45;}
+.lang__opt--soon:hover{color:var(--muted);}
+
+.lang__slider{
+  position:absolute;
+  top:3px;
+  bottom:3px;
+  left:3px;
+  width:calc(50% - 3px);
+  border-radius:999px;
+  background:var(--green-soft);
+  border:1px solid var(--green-line);
+  transition:transform .42s var(--ease);
+}
+/* The English page adds .lang--en on the capsule and the slider moves over.
+   A plain class, not :has() — one attribute in the markup beats a selector
+   that has to guess which of two different element types came last. */
+.lang--en .lang__slider{transform:translateX(100%);}
+
+.nav__cta{white-space:nowrap;}
+
 .nav__links{
   position:relative;
   display:flex;
@@ -265,6 +338,30 @@ body.cursor-fx button{cursor:none;}
   color:var(--muted);
   max-width:60ch;
   margin:calc(var(--space)*-4) 0 calc(var(--space)*7);
+}
+
+/* ═══ Slides ═════════════════════════════════════════════════════════════
+   Native scroll-snap, not wheel hijacking. `proximity` (not `mandatory`) is
+   the whole trick: the browser finishes a slide when you stop near its edge,
+   but never fights you mid-scroll inside a block that is taller than the
+   viewport. Height is a floor (`min-height`), never fixed — a slide that
+   outgrows the screen simply scrolls, instead of clipping its own text.
+   Keyboard, trackpad, scrollbar, find-in-page and screen readers all keep
+   working, which a JS wheel handler would break. */
+@media (prefers-reduced-motion:no-preference){
+  html{scroll-snap-type:y proximity;}
+}
+.snap{
+  scroll-snap-align:start;
+  scroll-snap-stop:normal;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+/* Fallback for engines without svh: dvh, then plain vh. */
+@supports not (height:100svh){
+  .snap{min-height:100vh;}
 }
 
 /* ═══ Footer ═════════════════════════════════════════════════════════════ */
