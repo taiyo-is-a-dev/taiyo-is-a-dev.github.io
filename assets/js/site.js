@@ -74,6 +74,88 @@ export function initNavSpy() {
   });
 }
 
+/* ─── One gesture, one slide ────────────────────────────────────────────
+   CSS snap alone cannot do what this does. `mandatory` guarantees you never
+   rest between two slides, but it decides where to land from where the gesture
+   *ends* — so a small flick (measured: 260px on a 900px slide) falls short of
+   halfway and gets pulled straight back to where it started. Nothing in CSS
+   makes the decision eager.
+
+   So this takes over the wheel, and only the wheel: it converts any wheel
+   gesture, however small, into a jump to the neighbouring snap position.
+   Keyboard, scrollbar, touch, find-in-page and anchor links are untouched and
+   still handled by native snap — which is the part a full scroll-hijack
+   library would have broken.
+
+   Only runs where the full-height slide layout is active. Every slide is
+   exactly one viewport tall there (verified), so there is never in-slide
+   content that this could make unreachable.                              */
+export function initSlideWheel() {
+  const root = document.documentElement;
+  if (!root.classList.contains('slides')) return;
+
+  const engaged = () => !reduced() && innerWidth >= 901 && innerHeight >= 600;
+
+  /* Snap positions in document order. `.snap` sections and the project track's
+     anchors are start-aligned, so their position is their offset from the top;
+     the footer is end-aligned, so its position is the bottom of the document. */
+  let stops = [];
+  const measure = () => {
+    const seen = new Set();
+    stops = [...document.querySelectorAll('.snap, .pjtrack__anchor')]
+      .map((el) => Math.round(el.getBoundingClientRect().top + scrollY))
+      .concat([Math.round(root.scrollHeight - innerHeight)])
+      .filter((y) => y >= 0 && !seen.has(y) && seen.add(y))
+      .sort((a, b) => a - b);
+  };
+
+  let lockedUntil = 0;
+
+  addEventListener('wheel', (e) => {
+    // Zoom, modified gestures and horizontal scrolling are not ours.
+    if (e.ctrlKey || e.metaKey || e.defaultPrevented) return;
+    if (Math.abs(e.deltaY) < 4 || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+    if (!engaged()) return;
+
+    const now = performance.now();
+    // A trackpad sends a long tail of decaying deltas after one flick; the lock
+    // is what keeps that tail from walking through three slides.
+    if (now < lockedUntil) {
+      e.preventDefault();
+      return;
+    }
+
+    if (!stops.length) measure();
+
+    const here = scrollY;
+    const dir = e.deltaY > 0 ? 1 : -1;
+    // Nearest stop to where we are, then step one along.
+    let i = 0;
+    for (let k = 1; k < stops.length; k += 1) {
+      if (Math.abs(stops[k] - here) < Math.abs(stops[i] - here)) i = k;
+    }
+    const next = stops[i + dir];
+    if (next === undefined) return;   // at either end: let the page behave normally
+
+    e.preventDefault();
+    lockedUntil = now + 620;
+    scrollTo({ top: next, behavior: 'smooth' });
+  }, { passive: false });
+
+  measure();
+  addEventListener('resize', debounceLocal(measure, 180));
+  addEventListener('load', measure);
+}
+
+/* Small local debounce so this module does not reach into fx.js internals. */
+function debounceLocal(fn, ms) {
+  let id = 0;
+  return (...args) => {
+    clearTimeout(id);
+    id = setTimeout(() => fn(...args), ms);
+  };
+}
+
 /* ─── Horizontal project track ─────────────────────────────────────────
    Turns downward scroll progress through a tall section into sideways
    movement of the panels inside its sticky stage. All this does is write one
@@ -225,7 +307,7 @@ function boot() {
   const modules = [
     initBgGrid, initHeroGlyph, initCursor,
     initReveal, initTilt, initMagnetic, initCounters, initTypeIn,
-    initNavSpy, initProjectTrack, initPageFx, initMobileMenu,
+    initNavSpy, initSlideWheel, initProjectTrack, initPageFx, initMobileMenu,
   ];
   for (const init of modules) {
     try {

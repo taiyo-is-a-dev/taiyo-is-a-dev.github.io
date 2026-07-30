@@ -54,15 +54,31 @@
   color-scheme:dark;
 }
 
+/* ─── Phone display scale ───────────────────────────────────────────────────
+   The clamp *floors* were not the binding term — at 320px the fluid middle
+   already computes ~33px for --step-4 and ~35px for --step-3, so lowering the
+   floors would have changed almost nothing. The slope is what has to come
+   down. Unbounded 800 at -.025em tracking fits roughly 7.5 glyphs per line in
+   a 265px measure, which is why an h2 like "Один розробник — увесь шлях
+   проєкту" wrapped to five lines. Scoped below 620px so every desktop size
+   stays byte-identical. */
+@media (max-width:620px){
+  :root{
+    --step-3:clamp(1.7rem,1.05rem + 3.4vw,4rem);
+    --step-4:clamp(1.75rem,.95rem + 4.1vw,4.4rem);
+  }
+}
+
 /* ─── Reset ─────────────────────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;}
 
 html{
   scroll-behavior:smooth;
-  /* Keeps an anchored heading clear of the fixed nav when a target is taller
-     than the viewport and therefore lands top-aligned. In the full-height
-     slide layout it is zeroed again (see layout.css) — there the content is
-     vertically centred, so this padding would only push every slide down. */
+  /* Keeps an anchored heading clear of the fixed nav on the ordinary long
+     pages (/tano/, /ftl/, /decks/), whose anchors land top-aligned. On the
+     slide page it is zeroed again (`html.slides` in layout.css) — there every
+     target is a viewport-height box that centres its own content, so this
+     padding would only push all of them down by its own value. */
   scroll-padding-top:calc(var(--nav-h) + var(--space)*2);
   -webkit-text-size-adjust:100%;
 }

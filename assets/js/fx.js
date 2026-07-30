@@ -155,14 +155,25 @@ export function initBgGrid() {
   }
 
   addEventListener('resize', debounce(build, 150));
+
+  /* Parking the pointer off-canvas is the only thing that dims the lattice
+     again. `pointerleave` covers a mouse leaving the window, but a finger or
+     pen never sends it — and on a touchscreen laptop `(pointer: coarse)` is
+     false, so the static path above does not run either. Without this the last
+     touch point stays lit for the rest of the session, glued to the screen
+     because #bg-grid is fixed. `pointerup` is filtered to non-mouse input, or
+     every mouse click would dim the lattice until the next move. */
+  const park = () => {
+    pointer.tx = -9999;
+    pointer.ty = -9999;
+  };
   addEventListener('pointermove', (e) => {
     pointer.tx = e.clientX;
     pointer.ty = e.clientY;
   }, { passive: true });
-  addEventListener('pointerleave', () => {
-    pointer.tx = -9999;
-    pointer.ty = -9999;
-  }, { passive: true });
+  addEventListener('pointerleave', park, { passive: true });
+  addEventListener('pointercancel', park, { passive: true });
+  addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') park(); }, { passive: true });
 
   loop(draw);
 }
@@ -363,7 +374,18 @@ export function initHeroGlyph() {
       render(0);
       return;
     }
-    loop(render);
+
+    /* The glyph is one screenful of a nine-screen page. `loop()` only pauses
+       when the tab is hidden, so without this it keeps sorting and painting
+       ~1400 dots every frame while the canvas sits thousands of pixels above
+       the fold. A flag set by an observer, not a per-frame bounding-box read,
+       so nothing forces layout. */
+    let onScreen = true;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; },
+        { rootMargin: '160px' }).observe(canvas);
+    }
+    loop((t) => { if (onScreen) render(t); });
   };
 
   if (document.fonts?.load) {

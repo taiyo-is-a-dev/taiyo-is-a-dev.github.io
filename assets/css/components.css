@@ -567,7 +567,24 @@
 @media (max-width:560px){
   .card__body,.card--skill,.module,.pair{padding:calc(var(--space)*3);}
   .module{padding-left:calc(var(--space)*4);}
-  .tile{padding:calc(var(--space)*3);gap:calc(var(--space)*.5) calc(var(--space)*2);}
+  /* The arrow is absolutely positioned 28px from the right edge, so a 24px
+     padding put it inside the text column with no gutter reserved — the email
+     tile cleared it by less than a pixel purely by luck of string length. */
+  .tile{
+    padding:calc(var(--space)*3);
+    padding-right:calc(var(--space)*7);
+    gap:calc(var(--space)*.5) calc(var(--space)*2);
+  }
+  /* The 230px floor exists to level a multi-column row. In one column it just
+     makes four cards the tallest thing on the page. */
+  .card--skill{min-height:0;}
+  /* The stamp was pinned to its clamp floor (95px per word, fixed gaps) while
+     the frame narrowed to ~264px, so it ran 1.5x wide and got sliced mid-word. */
+  .teaser__mark{
+    transform:rotate(-18deg) scale(1.05);
+    gap:calc(var(--space)*1) calc(var(--space)*2);
+  }
+  .teaser__mark i:nth-child(n+4){display:none;}
 }
 
 /* ═══ Horizontal project track ═══════════════════════════════════════════
@@ -800,7 +817,9 @@
   border-left:1px solid var(--border);
 }
 .minor__item h3{font-size:var(--step-0);margin-bottom:calc(var(--space)*1.5);}
-.minor__item p{margin:0;font-size:var(--step--1);color:var(--muted);line-height:1.7;}
+/* Real prose, so it gets a prose size. `--step--1` is the label step and
+   rendered this at 12.2px on a phone — 32 characters to the line. */
+.minor__item p{margin:0;font-size:.94rem;color:var(--muted);line-height:1.7;}
 
 /* ═══ SPBT bridge ════════════════════════════════════════════════════════ */
 .spbt{

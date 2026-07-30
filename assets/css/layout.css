@@ -112,6 +112,11 @@ body.cursor-fx button{cursor:none;}
 }
 .nav__logo svg{width:20px;height:20px;color:var(--green);transition:transform .5s var(--ease);}
 .nav__logo:hover svg{transform:translateY(-3px) rotate(-8deg);}
+/* Replaced content in a non-wrapping flex row resolves min-width to 0, so the
+   mark was the first thing sacrificed when the bar ran out of room — measured
+   width 0px on the case pages at 320px. It must never shrink. */
+.nav__logo,
+.nav__logo svg{flex:none;}
 
 /* Icon-only mark: no wordmark, so the bar stays quiet and the glyph reads
    as a button rather than a title. */
@@ -246,7 +251,12 @@ body.cursor-fx button{cursor:none;}
   display:flex;
   flex-direction:column;
   justify-content:center;
-  padding:calc(var(--nav-h) + var(--space)*8) 0 calc(var(--space)*10);
+  /* Symmetric on purpose. `justify-content:center` centres inside the content
+     box, so an asymmetric padding-block displaces the content by half the
+     difference — the old 136px/80px left the hero 28px low, the one slide that
+     did not reach 0 when scroll-padding was zeroed. The top value still clears
+     the fixed nav. */
+  padding:calc(var(--nav-h) + var(--space)*8) 0;
 }
 .hero__inner{
   display:grid;
@@ -319,6 +329,13 @@ body.cursor-fx button{cursor:none;}
 .section{
   position:relative;
   padding:calc(var(--space)*16) 0;
+  /* Second declaration on purpose — a browser without svh keeps the 256px
+     above. A fixed 256px of padding inside a `min-height:100svh` slide made
+     #ftl 821px tall in an 800px viewport: min-height stopped governing, the
+     slide outgrew the screen, and every slide after it landed on a fractional
+     snap position. Capping against the viewport keeps each one exactly one
+     screen tall. */
+  padding-block:min(calc(var(--space)*16),12svh);
 }
 /* Every slide keeps the page background, so the pointer-reactive dot lattice
    (a fixed canvas painted behind everything) stays visible on all of them.
@@ -336,7 +353,9 @@ body.cursor-fx button{cursor:none;}
 .section--soft::before{top:0;}
 .section--soft::after{bottom:0;}
 
-.section__title{margin-bottom:calc(var(--space)*7);max-width:20ch;}
+/* `min(20ch,100%)` — at phone display sizes 20ch is ~700px, so the bare cap
+   was inert there and misleading to read. */
+.section__title{margin-bottom:calc(var(--space)*7);max-width:min(20ch,100%);}
 .section__lead{
   font-size:var(--step-1);
   color:var(--muted);
@@ -359,10 +378,15 @@ body.cursor-fx button{cursor:none;}
    to hold a slide. Short or narrow screens fall back to `proximity`, where
    the browser assists but never traps. */
 @media (prefers-reduced-motion:no-preference){
-  html{scroll-snap-type:y proximity;}
+  html.slides{scroll-snap-type:y proximity;}
 }
-@media (prefers-reduced-motion:no-preference) and (min-width:760px) and (min-height:600px){
-  html{
+/* Scoped to `html.slides`, and the breakpoint matches the one that releases
+   `min-height:100svh` below. They used to disagree — snapping engaged at
+   760px while full-height slides stopped at 900px, so 760-900px tablets got
+   hard one-slide-per-gesture snapping on sections sized to their content,
+   which is the trap the guard above exists to avoid. */
+@media (prefers-reduced-motion:no-preference) and (min-width:901px) and (min-height:600px){
+  html.slides{
     scroll-snap-type:y mandatory;
     /* Zeroed on purpose. `scroll-snap-align:start` honours scroll-padding, so
        an 88px padding parked every slide 88px down the viewport — and because
@@ -379,7 +403,7 @@ body.cursor-fx button{cursor:none;}
      Measured before this rule: footer top sat exactly at the viewport bottom
      with 266px of scroll range that could not be used. `end` lets it come up
      flush against the bottom edge without giving it a slide's height. */
-  .footer{scroll-snap-align:end;}
+  .slides .footer{scroll-snap-align:end;}
 }
 .snap{
   scroll-snap-align:start;
@@ -485,7 +509,12 @@ body.cursor-fx button{cursor:none;}
 
 /* ═══ Responsive ═════════════════════════════════════════════════════════ */
 @media (max-width:1040px){
-  .hero__inner{grid-template-columns:1fr;gap:calc(var(--space)*6);}
+  /* `minmax(0,1fr)`, not bare `1fr`. Bare `1fr` means `minmax(auto,1fr)`, and
+     the auto floor is min-content — one unbreakable word ("запускається.")
+     could stretch the column past its container. `overflow-wrap:break-word`
+     stops the visible clip but, unlike `anywhere`, does not reduce min-content
+     contribution, so the column could still grow. */
+  .hero__inner{grid-template-columns:minmax(0,1fr);gap:calc(var(--space)*6);}
   .hero__visual{max-width:440px;}
 }
 
@@ -499,6 +528,39 @@ body.cursor-fx button{cursor:none;}
    of them. */
 @media (max-width:900px){
   :root{--nav-h:60px;}
+
+  /* The case pages still ship `.nav__links` + `.nav__burger` and site.js still
+     binds to them — only index.html uses the slim bar. Deleting these rules
+     left those three pages with four inline links in a 280px bar and a burger
+     stuck at display:none, so the drawer could never open. Restored, and they
+     only bite where that markup exists. */
+  .nav__burger{display:grid;}
+  .nav__links{
+    position:fixed;
+    inset:var(--nav-h) 0 auto 0;
+    flex-direction:column;
+    align-items:stretch;
+    gap:0;
+    padding:calc(var(--space)*2);
+    background:rgba(5,8,7,.96);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    transform:translateY(-12px);
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .3s var(--ease),transform .35s var(--ease),visibility .35s;
+  }
+  .nav__links.is-open{opacity:1;transform:none;visibility:visible;}
+  .nav__links a{padding:calc(var(--space)*2);border-radius:var(--radius-sm);font-size:1.05rem;}
+  .nav__pill{display:none;}
+
+  /* Bigger hit areas without moving any text: these are bare inline links,
+     measured ~110x18 and ~60x20, well under a comfortable touch target. */
+  .nav__who{display:inline-flex;align-items:center;min-height:44px;}
+  .footer__nav a,
+  .footer__powered a{display:inline-flex;align-items:center;min-height:44px;}
+  .footer__nav{gap:0 calc(var(--space)*3);}
 
   .nav__inner{gap:calc(var(--space)*1.5);}
   .nav__who{
@@ -530,15 +592,24 @@ body.cursor-fx button{cursor:none;}
 }
 
 @media (max-width:620px){
-  /* Two items per row instead of one long line — the label plus the caret was
-     overflowing the bar before the pill even got its turn. */
   .nav__who{
     font-size:.62rem;
     letter-spacing:.06em;
   }
-  .hero__tags{font-size:.62rem;gap:calc(var(--space)*1.25);}
+  /* Was .62rem — 9.9px on every phone, because it is a fixed rem with no fluid
+     term. This is a readable floor, not a decorative one. */
+  .hero__tags{font-size:.72rem;gap:calc(var(--space)*1.25);}
   .hero__tags li{gap:calc(var(--space)*1.25);}
   .footer__nav{gap:calc(var(--space)*1) calc(var(--space)*2);}
+}
+
+@media (max-width:520px){
+  /* The case pages carry a secondary external button beside a wordmark logo
+     AND a 44px burger; at 320px the three cannot share the bar. index.html's
+     "Контакти" is the only actionable item in its bar, so it is exempt by
+     class — the old blanket `.nav__inner > .btn{display:none}` is precisely
+     what made it vanish. */
+  .nav__inner > .btn:not(.nav__cta){display:none;}
 }
 
 @media (max-width:400px){
