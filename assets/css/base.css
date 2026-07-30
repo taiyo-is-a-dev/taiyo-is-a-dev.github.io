@@ -59,6 +59,10 @@
 
 html{
   scroll-behavior:smooth;
+  /* Keeps an anchored heading clear of the fixed nav when a target is taller
+     than the viewport and therefore lands top-aligned. In the full-height
+     slide layout it is zeroed again (see layout.css) — there the content is
+     vertically centred, so this padding would only push every slide down. */
   scroll-padding-top:calc(var(--nav-h) + var(--space)*2);
   -webkit-text-size-adjust:100%;
 }

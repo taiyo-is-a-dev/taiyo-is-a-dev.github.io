@@ -140,6 +140,20 @@ export function initBgGrid() {
   }
 
   build();
+
+  /* Touch devices get the lattice painted once and nothing else.
+     There is no hovering pointer to follow, so the only way the reaction could
+     ever fire is a tap — which reads as the background flinching under your
+     finger — and the rAF loop would keep burning battery redrawing a texture
+     that never changes. With the pointer parked off-canvas, one `draw()` gives
+     exactly the calm grid, links included (none, since they only appear near
+     the pointer). */
+  if (coarse()) {
+    addEventListener('resize', debounce(() => { build(); draw(); }, 150));
+    draw();
+    return;
+  }
+
   addEventListener('resize', debounce(build, 150));
   addEventListener('pointermove', (e) => {
     pointer.tx = e.clientX;
@@ -243,19 +257,24 @@ export function initHeroGlyph() {
     }));
   }
 
-  canvas.addEventListener('pointermove', (e) => {
-    const r = canvas.getBoundingClientRect();
-    pointer.x = e.clientX - r.left;
-    pointer.y = e.clientY - r.top;
-    pointer.nx = (pointer.x / r.width) * 2 - 1;
-    pointer.ny = (pointer.y / r.height) * 2 - 1;
-    pointer.on = true;
-  }, { passive: true });
-  canvas.addEventListener('pointerleave', () => {
-    pointer.on = false;
-    pointer.nx = 0;
-    pointer.ny = 0;
-  });
+  /* Same reasoning as the lattice: on a touch screen there is no hover, so a
+     tap would latch the rotation and leave it stuck. The glyph keeps its idle
+     drift instead, which is the part worth having on a phone. */
+  if (!coarse()) {
+    canvas.addEventListener('pointermove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      pointer.x = e.clientX - r.left;
+      pointer.y = e.clientY - r.top;
+      pointer.nx = (pointer.x / r.width) * 2 - 1;
+      pointer.ny = (pointer.y / r.height) * 2 - 1;
+      pointer.on = true;
+    }, { passive: true });
+    canvas.addEventListener('pointerleave', () => {
+      pointer.on = false;
+      pointer.nx = 0;
+      pointer.ny = 0;
+    });
+  }
 
   function render(t) {
     const still = reduced();

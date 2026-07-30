@@ -374,11 +374,16 @@
   position:relative;
   aspect-ratio:1;
 }
+/* `inset:0`, not a negative inset. A bloom that reached outside the card was
+   wider than the viewport on a phone and dragged the whole page 20px sideways
+   (measured at 390px: hiding this element alone took scrollWidth back to the
+   client width). Keeping it inside the box and letting the gradient fade
+   earlier gives the same halo with no geometry escaping. */
 .glyph-card::before{
   content:'';
   position:absolute;
-  inset:-12%;
-  background:radial-gradient(closest-side,rgba(87,199,92,.13),transparent 72%);
+  inset:0;
+  background:radial-gradient(closest-side,rgba(87,199,92,.16),transparent 78%);
   pointer-events:none;
 }
 #hero-glyph{position:absolute;inset:0;width:100%;height:100%;}

@@ -362,8 +362,24 @@ body.cursor-fx button{cursor:none;}
   html{scroll-snap-type:y proximity;}
 }
 @media (prefers-reduced-motion:no-preference) and (min-width:760px) and (min-height:600px){
-  html{scroll-snap-type:y mandatory;}
+  html{
+    scroll-snap-type:y mandatory;
+    /* Zeroed on purpose. `scroll-snap-align:start` honours scroll-padding, so
+       an 88px padding parked every slide 88px down the viewport — and because
+       each slide centres its own content, the content moved down by the full
+       88px too. Measured: exactly +88px off-centre on every slide. Slides are
+       viewport-height with centred content, so no padding is wanted here. */
+    scroll-padding-top:0;
+  }
   .snap{scroll-snap-stop:always;}
+
+  /* The footer is not a slide, but with `mandatory` it still needs a snap
+     point or it becomes unreachable: the scroller refuses to leave the last
+     slide's snap position and the footer stays parked just below the fold.
+     Measured before this rule: footer top sat exactly at the viewport bottom
+     with 266px of scroll range that could not be used. `end` lets it come up
+     flush against the bottom edge without giving it a slide's height. */
+  .footer{scroll-snap-align:end;}
 }
 .snap{
   scroll-snap-align:start;
@@ -473,38 +489,74 @@ body.cursor-fx button{cursor:none;}
   .hero__visual{max-width:440px;}
 }
 
+/* ═══ Phones and small tablets ═══════════════════════════════════════════
+   The old rules here served a burger menu that no longer exists: they hid the
+   nav's button and turned `.nav__links` into a drop-down panel. Both elements
+   are gone, and one of those rules was actively harmful — `.nav__inner > .btn
+   {display:none}` swallowed the new "Контакти" button, so a phone visitor had
+   no way to reach contacts from the bar at all (measured: height 0 at 320,
+   390 and 430). The bar is four small items now and fits without hiding any
+   of them. */
 @media (max-width:900px){
-  :root{--nav-h:64px;}
-  .nav__burger{display:grid;}
-  .nav__inner > .btn{display:none;}
+  :root{--nav-h:60px;}
 
-  .nav__links{
-    position:fixed;
-    inset:var(--nav-h) 0 auto 0;
-    flex-direction:column;
-    align-items:stretch;
-    gap:0;
-    padding:calc(var(--space)*2);
-    background:rgba(5,8,7,.96);
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
-    border-bottom:1px solid var(--border);
-    transform:translateY(-12px);
-    opacity:0;
-    visibility:hidden;
-    transition:opacity .3s var(--ease),transform .35s var(--ease),visibility .35s;
+  .nav__inner{gap:calc(var(--space)*1.5);}
+  .nav__who{
+    /* Keeps its full label while there is room; the letter-spacing is what
+       makes it wide, so that goes first. */
+    letter-spacing:.08em;
+    font-size:.68rem;
   }
-  .nav__links.is-open{opacity:1;transform:none;visibility:visible;}
-  .nav__links a{padding:calc(var(--space)*2);border-radius:var(--radius-sm);font-size:1.05rem;}
-  .nav__pill{display:none;}
+  .nav__cta{padding:calc(var(--space)*1.25) calc(var(--space)*2.25);}
+  .lang__opt{padding:calc(var(--space)*.75) calc(var(--space)*1.25);font-size:.66rem;}
 
-  .section{padding:calc(var(--space)*11) 0;}
-  .hero{min-height:auto;padding-top:calc(var(--nav-h) + var(--space)*10);}
+  /* Slides stop being forced to a full viewport. On a phone the content is
+     usually taller than the screen anyway, so demanding 100svh only added
+     dead space above and below; letting sections size to their content is
+     what makes the page read tightly. Snapping is already `proximity` here,
+     so nothing needs a fixed height to work. */
+  .snap,
+  .pjslide{min-height:0;}
+  .section{padding:calc(var(--space)*9) 0;}
+  .hero{
+    min-height:0;
+    padding:calc(var(--nav-h) + var(--space)*7) 0 calc(var(--space)*8);
+  }
   .hero__scroll{display:none;}
   .case{padding-top:calc(var(--nav-h) + var(--space)*9);}
+
+  .section__title{margin-bottom:calc(var(--space)*4);}
+  .section__lead{margin:calc(var(--space)*-2) 0 calc(var(--space)*4);}
 }
 
-@media (max-width:560px){
+@media (max-width:620px){
+  /* Two items per row instead of one long line — the label plus the caret was
+     overflowing the bar before the pill even got its turn. */
+  .nav__who{
+    font-size:.62rem;
+    letter-spacing:.06em;
+  }
   .hero__tags{font-size:.62rem;gap:calc(var(--space)*1.25);}
   .hero__tags li{gap:calc(var(--space)*1.25);}
+  .footer__nav{gap:calc(var(--space)*1) calc(var(--space)*2);}
 }
+
+@media (max-width:400px){
+  /* Below this the bar cannot hold the wordmark honestly. The logo already
+     links home and the pill plus CTA are the two things a visitor needs. */
+  .nav__who{display:none;}
+  .nav__logo--icon{margin-right:auto;}
+
+  /* At 320px the display size put "запускається." at ~323px inside a 280px
+     column — a single word wider than its container, which pushed the whole
+     page 18px sideways. Unbounded has no narrow variant, so the size has to
+     come down; `overflow-wrap` is the guard so no future long word can do the
+     same thing again. */
+  .hero__title{font-size:clamp(1.5rem,7.4vw,2rem);}
+  .pj__title{font-size:clamp(1.7rem,8vw,2.2rem);}
+}
+
+/* Headline type must never be able to overflow its column. Applied at every
+   width: a long product name or a URL in a heading would otherwise widen the
+   page rather than wrap. */
+h1,h2,h3,.pj__title,.hero__title{overflow-wrap:break-word;}
