@@ -191,58 +191,11 @@ body.cursor-fx button{cursor:none;}
 
 .nav__cta{white-space:nowrap;}
 
-.nav__links{
-  position:relative;
-  display:flex;
-  align-items:center;
-  gap:calc(var(--space)*.5);
-}
-.nav__links a{
-  position:relative;
-  z-index:1;
-  padding:calc(var(--space)*1) calc(var(--space)*2);
-  border-radius:999px;
-  font-size:.94rem;
-  font-weight:500;
-  color:var(--muted);
-  transition:color .3s var(--ease);
-  white-space:nowrap;
-}
-.nav__links a:hover{color:var(--text);}
-.nav__links a[aria-current="true"]{color:var(--text);}
-
-.nav__pill{
-  position:absolute;
-  top:50%;
-  left:0;
-  width:0;
-  height:calc(var(--space)*4.5);
-  transform:translateY(-50%);
-  border-radius:999px;
-  background:var(--green-soft);
-  border:1px solid var(--green-line);
-  opacity:0;
-  transition:left .45s var(--ease),width .45s var(--ease),opacity .3s;
-}
-.nav__pill.is-on{opacity:1;}
-
-.nav__burger{
-  display:none;
-  width:44px;height:44px;
-  place-items:center;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:var(--surface);
-}
-.nav__burger span{
-  display:block;
-  width:18px;height:1.5px;
-  background:var(--text);
-  transition:transform .35s var(--ease),opacity .25s;
-}
-.nav__burger span + span{margin-top:5px;}
-.nav__burger[aria-expanded="true"] span:first-child{transform:translateY(3.25px) rotate(45deg);}
-.nav__burger[aria-expanded="true"] span:last-child{transform:translateY(-3.25px) rotate(-45deg);}
+/* `.nav__links`, `.nav__pill` and `.nav__burger` used to live here. Every page
+   now ships the same slim bar — icon, one link, language pill (index only),
+   one action — so the multi-link row, its sliding indicator and the mobile
+   drawer have no markup left anywhere and are gone rather than left dormant.
+   Their absence is what let `initMobileMenu()` go too. */
 
 /* ═══ Hero ═══════════════════════════════════════════════════════════════ */
 .hero{
@@ -519,41 +472,14 @@ body.cursor-fx button{cursor:none;}
 }
 
 /* ═══ Phones and small tablets ═══════════════════════════════════════════
-   The old rules here served a burger menu that no longer exists: they hid the
-   nav's button and turned `.nav__links` into a drop-down panel. Both elements
-   are gone, and one of those rules was actively harmful — `.nav__inner > .btn
-   {display:none}` swallowed the new "Контакти" button, so a phone visitor had
-   no way to reach contacts from the bar at all (measured: height 0 at 320,
-   390 and 430). The bar is four small items now and fits without hiding any
-   of them. */
+   Nothing in the bar is hidden at any width any more. The rules that used to
+   sit here served a burger drawer, and one of them — `.nav__inner > .btn
+   {display:none}` — swallowed the "Контакти" button outright: measured height
+   0 at 320, 390 and 430, so a phone visitor could not reach contacts from the
+   bar at all. Every page now carries the same three or four small items, which
+   fit a 320px screen intact. */
 @media (max-width:900px){
   :root{--nav-h:60px;}
-
-  /* The case pages still ship `.nav__links` + `.nav__burger` and site.js still
-     binds to them — only index.html uses the slim bar. Deleting these rules
-     left those three pages with four inline links in a 280px bar and a burger
-     stuck at display:none, so the drawer could never open. Restored, and they
-     only bite where that markup exists. */
-  .nav__burger{display:grid;}
-  .nav__links{
-    position:fixed;
-    inset:var(--nav-h) 0 auto 0;
-    flex-direction:column;
-    align-items:stretch;
-    gap:0;
-    padding:calc(var(--space)*2);
-    background:rgba(5,8,7,.96);
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
-    border-bottom:1px solid var(--border);
-    transform:translateY(-12px);
-    opacity:0;
-    visibility:hidden;
-    transition:opacity .3s var(--ease),transform .35s var(--ease),visibility .35s;
-  }
-  .nav__links.is-open{opacity:1;transform:none;visibility:visible;}
-  .nav__links a{padding:calc(var(--space)*2);border-radius:var(--radius-sm);font-size:1.05rem;}
-  .nav__pill{display:none;}
 
   /* Bigger hit areas without moving any text: these are bare inline links,
      measured ~110x18 and ~60x20, well under a comfortable touch target. */
@@ -603,14 +529,6 @@ body.cursor-fx button{cursor:none;}
   .footer__nav{gap:calc(var(--space)*1) calc(var(--space)*2);}
 }
 
-@media (max-width:520px){
-  /* The case pages carry a secondary external button beside a wordmark logo
-     AND a 44px burger; at 320px the three cannot share the bar. index.html's
-     "Контакти" is the only actionable item in its bar, so it is exempt by
-     class — the old blanket `.nav__inner > .btn{display:none}` is precisely
-     what made it vanish. */
-  .nav__inner > .btn:not(.nav__cta){display:none;}
-}
 
 @media (max-width:400px){
   /* Below this the bar cannot hold the wordmark honestly. The logo already

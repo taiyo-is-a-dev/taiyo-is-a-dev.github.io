@@ -8,11 +8,14 @@ import { initReveal, initTilt, initMagnetic, initCounters, initTypeIn } from './
 
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ─── Active-section highlight + hide-on-scroll ──────────────────────── */
+/* ─── Active-section highlight + hide-on-scroll ────────────────────────
+   The sliding `.nav__pill` indicator is gone along with the multi-link row it
+   used to track: the bar now carries a single link, so there is nothing to
+   slide between. What stays is the active-link marking (for the one link) and
+   hiding the bar on scroll-down.                                          */
 export function initNavSpy() {
   const nav = document.querySelector('[data-nav]');
   const links = [...document.querySelectorAll('[data-nav-link]')];
-  const pill = document.querySelector('.nav__pill');
 
   if (nav) {
     let last = scrollY;
@@ -38,13 +41,6 @@ export function initNavSpy() {
 
   if (!links.length) return;
 
-  const movePill = (link) => {
-    if (!pill || innerWidth < 900) return;
-    pill.style.left = `${link.offsetLeft}px`;
-    pill.style.width = `${link.offsetWidth}px`;
-    pill.classList.add('is-on');
-  };
-
   const sections = links
     .map((link) => {
       const id = link.getAttribute('href') ?? '';
@@ -61,17 +57,10 @@ export function initNavSpy() {
       if (!link) continue;
       links.forEach((l) => l.removeAttribute('aria-current'));
       link.setAttribute('aria-current', 'true');
-      movePill(link);
     }
   }, { rootMargin: '-45% 0px -50% 0px' });
 
   sections.forEach((s) => io.observe(s));
-
-  addEventListener('resize', () => {
-    const current = links.find((l) => l.getAttribute('aria-current') === 'true');
-    if (current) movePill(current);
-    else pill?.classList.remove('is-on');
-  });
 }
 
 /* ─── One gesture, one slide ────────────────────────────────────────────
@@ -263,38 +252,11 @@ export function initPageFx() {
   });
 }
 
-/* ─── Mobile menu ────────────────────────────────────────────────────── */
-export function initMobileMenu() {
-  const toggle = document.querySelector('[data-menu-toggle]');
-  const menu = document.querySelector('[data-menu]');
-  if (!toggle || !menu) return;
-
-  const setOpen = (open) => {
-    menu.classList.toggle('is-open', open);
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Закрити меню' : 'Відкрити меню');
-    document.body.style.overflow = open ? 'hidden' : '';
-  };
-
-  toggle.addEventListener('click', () => {
-    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
-  });
-
-  menu.addEventListener('click', (e) => {
-    if (e.target instanceof Element && e.target.closest('a')) setOpen(false);
-  });
-
-  addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-      setOpen(false);
-      toggle.focus();
-    }
-  });
-
-  addEventListener('resize', () => {
-    if (innerWidth >= 900) setOpen(false);
-  });
-}
+/* `initMobileMenu()` lived here. It drove the burger drawer, which every page
+   has now dropped in favour of the slim bar — three items fit a 320px screen
+   without hiding anything, so there is nothing left to toggle. Deleted rather
+   than kept dormant: a function that silently bails is the kind of thing that
+   later gets read as still in use. */
 
 /* ─── Boot ───────────────────────────────────────────────────────────
    Each module is isolated: a broken effect must never take navigation
@@ -307,7 +269,7 @@ function boot() {
   const modules = [
     initBgGrid, initHeroGlyph, initCursor,
     initReveal, initTilt, initMagnetic, initCounters, initTypeIn,
-    initNavSpy, initSlideWheel, initProjectTrack, initPageFx, initMobileMenu,
+    initNavSpy, initSlideWheel, initProjectTrack, initPageFx,
   ];
   for (const init of modules) {
     try {
