@@ -3,7 +3,7 @@
  * every effect. Loaded by every page as a single <script type="module">.
  */
 
-import { initBgGrid, initHeroPoly, initCursor } from './fx.js';
+import { initBgGrid, initHeroGlyph, initCursor } from './fx.js';
 import { initReveal, initTilt, initMagnetic, initCounters, initTypeIn } from './motion.js';
 
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -158,7 +158,7 @@ function boot() {
   clearTimeout(window.__taiyoFailsafe);
 
   const modules = [
-    initBgGrid, initHeroPoly, initCursor,
+    initBgGrid, initHeroGlyph, initCursor,
     initReveal, initTilt, initMagnetic, initCounters, initTypeIn,
     initNavSpy, initPageFx, initMobileMenu,
   ];

@@ -153,95 +153,198 @@ export function initBgGrid() {
   loop(draw);
 }
 
-/* ─── Hero wireframe ─────────────────────────────────────────────────────
-   Icosahedron, projected by hand. Twelve vertices from the golden ratio,
-   thirty edges, one perspective divide — no 3D library involved.        */
-const PHI = (1 + Math.sqrt(5)) / 2;
+/* ─── Hero glyph ─────────────────────────────────────────────────────────
+   `</>` as a solid slab of dots, rotated and projected by hand.
 
-const VERTS = [
-  [-1, PHI, 0], [1, PHI, 0], [-1, -PHI, 0], [1, -PHI, 0],
-  [0, -1, PHI], [0, 1, PHI], [0, -1, -PHI], [0, 1, -PHI],
-  [PHI, 0, -1], [PHI, 0, 1], [-PHI, 0, -1], [-PHI, 0, 1],
-];
+   The shape is not hand-plotted: the glyph is drawn once into an offscreen
+   canvas, its pixels are read, and every filled sample becomes a dot. So the
+   form comes from the typeface itself — change SYMBOL or the font and the
+   object rebuilds. Each dot gets a random z inside a slab, which is what
+   gives the object thickness when it turns.
 
-const EDGES = [
-  [0, 1], [0, 5], [0, 7], [0, 10], [0, 11], [1, 5], [1, 7], [1, 8], [1, 9], [2, 3],
-  [2, 4], [2, 6], [2, 10], [2, 11], [3, 4], [3, 6], [3, 8], [3, 9], [4, 5], [4, 9],
-  [4, 11], [5, 9], [5, 11], [6, 7], [6, 8], [6, 10], [7, 8], [7, 10], [8, 9], [10, 11],
-];
+   No 3D library, and none is wanted: the site self-hosts everything and the
+   test suite rejects external hosts. Two rotation matrices and one
+   perspective divide are enough.                                          */
+const SYMBOL = '</>';
 
-export function initHeroPoly() {
-  const canvas = document.getElementById('hero-poly');
+/** Read a glyph's filled pixels into points centred on the origin. */
+function sampleGlyph(text, w, h, step, pad) {
+  const off = document.createElement('canvas');
+  off.width = Math.max(1, Math.round(w));
+  off.height = Math.max(1, Math.round(h));
+  const g = off.getContext('2d');
+  const font = (px) => `800 ${px}px Unbounded, system-ui, sans-serif`;
+
+  // Fit by the glyph's real ink box, not a guessed fraction of the height —
+  // otherwise the shape overflows and we sample a cropped fragment.
+  const probe = 100;
+  g.font = font(probe);
+  const m = g.measureText(text);
+  const inkH = (m.actualBoundingBoxAscent || probe * 0.7)
+    + (m.actualBoundingBoxDescent || probe * 0.2);
+  const size = Math.max(
+    12,
+    Math.floor(probe * Math.min((off.width - pad * 2) / m.width, (off.height - pad * 2) / inkH)),
+  );
+
+  g.font = font(size);
+  g.textAlign = 'center';
+  g.textBaseline = 'middle';
+  g.fillStyle = '#fff';
+  g.fillText(text, off.width / 2, off.height / 2);
+
+  const { data } = g.getImageData(0, 0, off.width, off.height);
+  const pts = [];
+  for (let y = 0; y < off.height; y += step) {
+    for (let x = 0; x < off.width; x += step) {
+      if (data[(y * off.width + x) * 4 + 3] > 130) {
+        pts.push([x - off.width / 2, y - off.height / 2]);
+      }
+    }
+  }
+  return pts;
+}
+
+export function initHeroGlyph() {
+  const canvas = document.getElementById('hero-glyph');
   if (!canvas) return;
 
   const card = canvas.closest('[data-tilt]') ?? canvas.parentElement;
+  const DEPTH = 46;      // slab thickness in model units
+  const FOCAL = 520;     // perspective distance
+  const PUSH = 92;       // cursor influence radius, px
+
   let ctx;
   let w;
   let h;
+  let pts = [];
+  let ry = 0;
+  let rx = 0;
+  const order = [];
+  const pointer = { x: 0, y: 0, on: false };
 
-  const size = () => {
+  function size() {
     ({ ctx, w, h } = fit(canvas));
-  };
+    // Denser on roomy cards, sparser on small ones — the dot count drives cost.
+    const step = w < 300 ? 4 : 3;
+    pts = sampleGlyph(SYMBOL, w, h, step, Math.max(18, w * 0.09)).map(([x, y]) => ({
+      bx: x,
+      by: y,
+      bz: (Math.random() - 0.5) * DEPTH,
+      ox: 0,
+      oy: 0,
+      vx: 0,
+      vy: 0,
+      r: 0.8 + Math.random() * 0.7,
+      ph: Math.random() * Math.PI * 2,
+    }));
+  }
 
-  const projected = new Array(VERTS.length);
+  canvas.addEventListener('pointermove', (e) => {
+    const r = canvas.getBoundingClientRect();
+    pointer.x = e.clientX - r.left;
+    pointer.y = e.clientY - r.top;
+    pointer.on = true;
+  }, { passive: true });
+  canvas.addEventListener('pointerleave', () => { pointer.on = false; });
 
   function render(t) {
-    const yaw = t * 0.00022 + (Number.parseFloat(card?.style.getPropertyValue('--tx')) || 0) * 0.55;
-    const pitch = t * 0.00014 + (Number.parseFloat(card?.style.getPropertyValue('--ty')) || 0) * 0.45;
+    const still = reduced();
+    const ms = t * 0.001;
 
-    const cy = Math.cos(yaw);
-    const sy = Math.sin(yaw);
-    const cx = Math.cos(pitch);
-    const sx = Math.sin(pitch);
+    // Aim: follow the card's tilt (already driven by the pointer) and drift
+    // slowly when nobody is hovering, so the object never looks frozen.
+    const tx = Number.parseFloat(card?.style.getPropertyValue('--tx')) || 0;
+    const ty = Number.parseFloat(card?.style.getPropertyValue('--ty')) || 0;
+    const aimY = tx ? tx * 0.85 : Math.sin(ms * 0.22) * 0.42;
+    const aimX = ty ? -ty * 0.6 : Math.sin(ms * 0.17) * 0.14;
 
-    const scale = Math.min(w, h) * 0.165;
-    const ox = w / 2;
-    const oy = h / 2;
-
-    for (let i = 0; i < VERTS.length; i += 1) {
-      const [vx, vy, vz] = VERTS[i];
-      const x1 = vx * cy + vz * sy;
-      const z1 = vz * cy - vx * sy;
-      const y2 = vy * cx - z1 * sx;
-      const z2 = z1 * cx + vy * sx;
-      const f = 6 / (6 + z2);
-      projected[i] = { x: ox + x1 * f * scale, y: oy + y2 * f * scale, f };
+    if (still) {
+      ry = 0.36;
+      rx = 0.1;
+    } else {
+      ry += (aimY - ry) * 0.06;
+      rx += (aimX - rx) * 0.06;
     }
+
+    const cy = Math.cos(ry);
+    const sy = Math.sin(ry);
+    const cx = Math.cos(rx);
+    const sx = Math.sin(rx);
+
+    order.length = 0;
+    for (let i = 0; i < pts.length; i += 1) {
+      const p = pts[i];
+      const breathe = still ? 0 : Math.sin(ms * 1.2 + p.ph) * 1.4;
+
+      const x1 = p.bx * cy + p.bz * sy;
+      const z1 = p.bz * cy - p.bx * sy;
+      const yy = p.by + breathe;
+      const y2 = yy * cx - z1 * sx;
+      const z2 = z1 * cx + yy * sx;
+
+      const f = FOCAL / (FOCAL + z2);
+      const px = w / 2 + x1 * f;
+      const py = h / 2 + y2 * f;
+
+      if (!still) {
+        if (pointer.on) {
+          const dx = px + p.ox - pointer.x;
+          const dy = py + p.oy - pointer.y;
+          const d = Math.hypot(dx, dy) || 1;
+          if (d < PUSH) {
+            const k = (1 - d / PUSH) * 4.4;
+            p.vx += (dx / d) * k;
+            p.vy += (dy / d) * k;
+          }
+        }
+        p.vx = (p.vx - p.ox * 0.12) * 0.82;
+        p.vy = (p.vy - p.oy * 0.12) * 0.82;
+        p.ox += p.vx;
+        p.oy += p.vy;
+      } else {
+        p.ox = 0;
+        p.oy = 0;
+      }
+
+      order.push({ x: px + p.ox, y: py + p.oy, f, r: p.r });
+    }
+
+    // Painter's algorithm: far dots first, so near ones overlap them.
+    order.sort((a, b) => a.f - b.f);
 
     ctx.clearRect(0, 0, w, h);
-
-    for (let i = 0; i < EDGES.length; i += 1) {
-      const a = projected[EDGES[i][0]];
-      const b = projected[EDGES[i][1]];
-      const depth = (a.f + b.f) / 2;
-      ctx.strokeStyle = `rgba(110,231,135,${0.16 + (depth - 0.74) * 1.3})`;
-      ctx.lineWidth = 0.5 + Math.max(0, depth - 0.75) * 1.6;
+    for (let i = 0; i < order.length; i += 1) {
+      const d = order[i];
+      const depth = Math.max(0, Math.min(1, (d.f - 0.78) / 0.44));
       ctx.beginPath();
-      ctx.moveTo(a.x, a.y);
-      ctx.lineTo(b.x, b.y);
-      ctx.stroke();
-    }
-
-    for (let i = 0; i < projected.length; i += 1) {
-      const p = projected[i];
-      ctx.fillStyle = `rgba(232,242,236,${0.14 + Math.max(0, p.f - 0.78) * 1.1})`;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 1 + Math.max(0, p.f - 0.9) * 3, 0, Math.PI * 2);
+      ctx.arc(d.x, d.y, d.r * (0.55 + depth * 0.95), 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${87 + depth * 23},${199 + depth * 32},${92 + depth * 43},${0.16 + depth * 0.82})`;
       ctx.fill();
     }
   }
 
-  size();
-  addEventListener('resize', debounce(() => {
+  /* The glyph is measured from the font, so sampling before Unbounded loads
+     would fit the shape to fallback metrics and leave it the wrong size. */
+  const start = () => {
     size();
-    if (reduced()) render(0);
-  }, 150));
+    addEventListener('resize', debounce(() => {
+      size();
+      if (reduced()) render(0);
+    }, 150));
 
-  if (reduced()) {
-    render(0);
-    return;
+    if (reduced()) {
+      render(0);
+      return;
+    }
+    loop(render);
+  };
+
+  if (document.fonts?.load) {
+    document.fonts.load(`800 100px Unbounded`, SYMBOL).then(start, start);
+  } else {
+    start();
   }
-  loop(render);
 }
 
 /* ─── Custom cursor ──────────────────────────────────────────────────── */

@@ -22,7 +22,10 @@ export const PALETTE = [
   '#6EE787',
 ];
 
-const SKIP = new Set(['.git', 'node_modules', 'docs', 'tools', 'scratch']);
+/* Не сторінки сайту: службові теки й чернетки. `.superpowers` — макети
+   візуального компаньйона з брейнштормів; вони gitignored і живуть за
+   власними правилами, тому під перевірки сайту потрапляти не мають. */
+const SKIP = new Set(['.git', 'node_modules', 'docs', 'tools', 'scratch', '.superpowers']);
 
 export function htmlFiles(root, dir = root, out = []) {
   for (const name of readdirSync(dir)) {

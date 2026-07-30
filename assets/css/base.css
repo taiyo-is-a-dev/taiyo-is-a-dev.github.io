@@ -139,13 +139,31 @@ strong{font-weight:700;}
 
 .u-muted{color:var(--muted);}
 
+/* Акцентний рядок заголовка — градієнт по літерах.
+   Раніше тут було -webkit-text-stroke, і воно розсипалось: заголовки
+   успадковують letter-spacing:-.025em, що для залитого тексту непомітно
+   (заливки зливаються в одну форму), але в обведенні кожен край стає видимою
+   лінією — і злиплі гліфи Unbounded 800 перетворювались на клубок.
+   Градієнт дає обʼєм без жодних контурів, тому проблема зникає разом зі
+   стежкою. Ім'я класу лишаємо: воно вже стоїть у розмітці всіх сторінок. */
 .u-outline{
+  background:linear-gradient(96deg,var(--green) 0%,var(--green-hi) 46%,var(--green) 100%);
+  background-size:220% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
   color:transparent;
-  -webkit-text-stroke:1.6px var(--green);
-  paint-order:stroke fill;
 }
-@supports not (-webkit-text-stroke:1px red){
-  .u-outline{color:var(--green);}
+/* Старі рухи браузера без background-clip:text показали б порожнє місце. */
+@supports not ((-webkit-background-clip:text) or (background-clip:text)){
+  .u-outline{background:none;color:var(--green);}
+}
+/* Повільний зсув градієнта — літери «дихають». Тільки коли анімації дозволені. */
+@media (prefers-reduced-motion:no-preference){
+  .u-outline{animation:u-outline-drift 9s var(--ease-io) infinite alternate;}
+}
+@keyframes u-outline-drift{
+  from{background-position:0% 50%;}
+  to{background-position:100% 50%;}
 }
 
 .u-lead{

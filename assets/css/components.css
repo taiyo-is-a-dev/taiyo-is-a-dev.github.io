@@ -312,7 +312,7 @@
 .tile:hover .tile__arrow{transform:translate(3px,-3px);color:var(--green-hi);}
 
 /* ═══ Hero poly card ═════════════════════════════════════════════════════ */
-.poly-card{
+.glyph-card{
   position:relative;
   aspect-ratio:1;
   border:1px solid var(--border);
@@ -326,7 +326,7 @@
   will-change:transform;
   transition:transform .5s var(--ease);
 }
-.poly-card::before{
+.glyph-card::before{
   content:'';
   position:absolute;
   inset:0;
@@ -336,17 +336,17 @@
   background-size:48px 48px;
   mask-image:radial-gradient(80% 80% at 50% 50%,black,transparent 78%);
 }
-#hero-poly{position:absolute;inset:0;width:100%;height:100%;}
-.poly-card__tag{
+#hero-glyph{position:absolute;inset:0;width:100%;height:100%;}
+.glyph-card__tag{
   position:absolute;
   color:var(--muted);
   font-size:.6rem;
   opacity:.8;
 }
-.poly-card__tag--tl{top:calc(var(--space)*2.5);left:calc(var(--space)*2.5);}
-.poly-card__tag--tr{top:calc(var(--space)*2.5);right:calc(var(--space)*2.5);}
-.poly-card__tag--bl{bottom:calc(var(--space)*2.5);left:calc(var(--space)*2.5);}
-.poly-card__tag--br{bottom:calc(var(--space)*2.5);right:calc(var(--space)*2.5);}
+.glyph-card__tag--tl{top:calc(var(--space)*2.5);left:calc(var(--space)*2.5);}
+.glyph-card__tag--tr{top:calc(var(--space)*2.5);right:calc(var(--space)*2.5);}
+.glyph-card__tag--bl{bottom:calc(var(--space)*2.5);left:calc(var(--space)*2.5);}
+.glyph-card__tag--br{bottom:calc(var(--space)*2.5);right:calc(var(--space)*2.5);}
 
 /* ═══ Module grid (TANO case) ════════════════════════════════════════════ */
 .modules{
