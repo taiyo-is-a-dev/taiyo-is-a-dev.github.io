@@ -77,7 +77,7 @@
           та 3D у Blender. Від першого полігону до продакшн-деплою.
         </p>
         <div class="hero__actions" data-reveal data-reveal-delay="2">
-          <a class="btn btn--primary" data-magnetic href="#tano">Проєкти <span aria-hidden="true">→</span></a>
+          <a class="btn btn--primary" data-magnetic href="#projects">Проєкти <span aria-hidden="true">→</span></a>
           <a class="btn" data-magnetic href="https://discord.com/invite/b8QpW8W6fR" target="_blank" rel="noopener">Discord <span aria-hidden="true">↗</span></a>
         </div>
         <ul class="hero__tags u-mono" data-reveal data-reveal-delay="3">
@@ -152,9 +152,22 @@
     </div>
   </section>
 
-  <!-- ═══ 04 · TANO ══════════════════════════════════════════════════ -->
-  <section class="section snap pj" id="tano">
-    <div class="u-container pj__inner">
+  <!-- ═══ 04–06 · Власні проєкти, горизонтально ══════════════════════
+       Три проєкти, що належать мені, їдуть справа наліво. Секція висока,
+       всередині sticky-сцена, а рух дає translateX від прогресу звичайної
+       вертикальної прокрутки — тобто це справжній скрол, а не перехват
+       колеса: скролбар, клавіші й пошук по сторінці працюють. Три
+       невидимі якорі дають scroll-snap точки, по одній на проєкт.     -->
+  <section class="pjtrack" id="projects" data-pjtrack>
+    <span class="pjtrack__anchor pjtrack__anchor--1" aria-hidden="true"></span>
+    <span class="pjtrack__anchor pjtrack__anchor--2" aria-hidden="true"></span>
+    <span class="pjtrack__anchor pjtrack__anchor--3" aria-hidden="true"></span>
+
+    <div class="pjtrack__stage">
+      <div class="pjtrack__row" data-pjrow>
+
+        <article class="pjslide pj" id="tano">
+          <div class="u-container pj__inner">
       <div class="pj__copy">
         <p class="u-mono u-eyebrow" data-reveal>Проєкт 01 — власний</p>
         <h2 class="pj__title" data-reveal data-reveal-delay="1">TANO</h2>
@@ -180,12 +193,11 @@
         <img src="/assets/img/tano-banner.png" width="1280" height="640" loading="lazy"
              alt="Логотип TANO: зелена стрілка-Т і напис TANO на темному тлі">
       </div>
-    </div>
-  </section>
+          </div>
+        </article>
 
-  <!-- ═══ 05 · SPBT ══════════════════════════════════════════════════ -->
-  <section class="section section--soft snap pj" id="spbt">
-    <div class="u-container pj__inner">
+        <article class="pjslide pj" id="spbt">
+          <div class="u-container pj__inner">
       <div class="pj__copy">
         <p class="u-mono u-eyebrow" data-reveal>Проєкт 02 — власний</p>
         <h2 class="pj__title" data-reveal data-reveal-delay="1">SPBT</h2>
@@ -205,12 +217,11 @@
         <span class="pj__wordmark">SPBT</span>
         <span class="pj__wordsub u-mono">Small Projects by Taiyo</span>
       </div>
-    </div>
-  </section>
+          </div>
+        </article>
 
-  <!-- ═══ 06 · Цей сайт ══════════════════════════════════════════════ -->
-  <section class="section snap pj" id="site">
-    <div class="u-container pj__inner">
+        <article class="pjslide pj" id="site">
+          <div class="u-container pj__inner">
       <div class="pj__copy">
         <p class="u-mono u-eyebrow" data-reveal>Проєкт 03 — власний</p>
         <h2 class="pj__title" data-reveal data-reveal-delay="1">Цей сайт</h2>
@@ -233,7 +244,16 @@
         <span class="pj__wordmark">taiyo</span>
         <span class="pj__wordsub u-mono">.is-a.dev</span>
       </div>
-    </div>
+          </div>
+        </article>
+
+      </div><!-- /.pjtrack__row -->
+
+      <div class="pjtrack__dots" data-pjdots aria-hidden="true">
+        <span class="is-on"></span><span></span><span></span>
+      </div>
+      <p class="pjtrack__hint u-mono" aria-hidden="true">Гортай — проєкти йдуть убік</p>
+    </div><!-- /.pjtrack__stage -->
   </section>
 
   <!-- ═══ 07 · школи — далі буде ═══════════════════════════════════════
@@ -343,7 +363,7 @@
     </div>
     <nav class="footer__nav" aria-label="Навігація у футері">
       <a href="/#about">Про мене</a>
-      <a href="/#tano">Проєкти</a>
+      <a href="/#projects">Проєкти</a>
       <a href="/#contact">Контакти</a>
       <a href="https://spbt.pp.ua" target="_blank" rel="noopener">spbt.pp.ua <span aria-hidden="true">↗</span></a>
       <a href="https://discord.com/invite/b8QpW8W6fR" target="_blank" rel="noopener">Discord <span aria-hidden="true">↗</span></a>

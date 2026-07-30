@@ -320,14 +320,18 @@ body.cursor-fx button{cursor:none;}
   position:relative;
   padding:calc(var(--space)*16) 0;
 }
-.section--soft{background:var(--bg-soft);}
+/* Every slide keeps the page background, so the pointer-reactive dot lattice
+   (a fixed canvas painted behind everything) stays visible on all of them.
+   An opaque tint here would cover that canvas — which is exactly why the
+   former green sections looked dead under the cursor. Separation is carried
+   by a hairline instead of a fill. */
 .section--soft::before,
 .section--soft::after{
   content:'';
   position:absolute;
   left:0;right:0;
   height:1px;
-  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  background:linear-gradient(90deg,transparent,var(--border-hi),transparent);
 }
 .section--soft::before{top:0;}
 .section--soft::after{bottom:0;}
@@ -341,25 +345,33 @@ body.cursor-fx button{cursor:none;}
 }
 
 /* ═══ Slides ═════════════════════════════════════════════════════════════
-   Native scroll-snap, not wheel hijacking. `proximity` (not `mandatory`) is
-   the whole trick: the browser finishes a slide when you stop near its edge,
-   but never fights you mid-scroll inside a block that is taller than the
-   viewport. Height is a floor (`min-height`), never fixed — a slide that
-   outgrows the screen simply scrolls, instead of clipping its own text.
-   Keyboard, trackpad, scrollbar, find-in-page and screen readers all keep
-   working, which a JS wheel handler would break. */
+   Native scroll-snap, never a wheel handler — keyboard, trackpad, scrollbar,
+   find-in-page and screen readers keep working.
+
+   `mandatory` + `scroll-snap-stop:always` is what makes a small flick throw
+   you all the way to the next slide and makes stopping between two slides
+   impossible. `always` also caps one gesture at one slide, so a hard fling
+   cannot skip three.
+
+   The catch: with `mandatory`, content taller than the viewport can become
+   unreachable. Guarded two ways — height stays a floor (`min-height`, never
+   fixed), and the whole thing only engages when the viewport is tall enough
+   to hold a slide. Short or narrow screens fall back to `proximity`, where
+   the browser assists but never traps. */
 @media (prefers-reduced-motion:no-preference){
   html{scroll-snap-type:y proximity;}
 }
+@media (prefers-reduced-motion:no-preference) and (min-width:760px) and (min-height:600px){
+  html{scroll-snap-type:y mandatory;}
+  .snap{scroll-snap-stop:always;}
+}
 .snap{
   scroll-snap-align:start;
-  scroll-snap-stop:normal;
   min-height:100svh;
   display:flex;
   flex-direction:column;
   justify-content:center;
 }
-/* Fallback for engines without svh: dvh, then plain vh. */
 @supports not (height:100svh){
   .snap{min-height:100vh;}
 }

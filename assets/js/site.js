@@ -74,6 +74,71 @@ export function initNavSpy() {
   });
 }
 
+/* ─── Horizontal project track ─────────────────────────────────────────
+   Turns downward scroll progress through a tall section into sideways
+   movement of the panels inside its sticky stage. All this does is write one
+   custom property, `--p` (0 → 1); the transform lives in CSS. Scrolling is
+   never intercepted, so the scrollbar, keyboard, and find-in-page behave
+   normally — only the painting goes sideways.
+
+   Below 760px or with reduced motion the CSS keeps the panels stacked, so
+   this bails out and leaves `--p` unset.                                  */
+export function initProjectTrack() {
+  const track = document.querySelector('[data-pjtrack]');
+  const row = track?.querySelector('[data-pjrow]');
+  if (!track || !row) return;
+
+  const dots = [...(track.querySelector('[data-pjdots]')?.children ?? [])];
+  const anchors = [...track.querySelectorAll('.pjtrack__anchor')];
+  const horizontal = () => !reduced() && innerWidth >= 760;
+
+  let ticking = false;
+
+  const update = () => {
+    ticking = false;
+
+    if (!horizontal() || anchors.length < 2) {
+      row.style.removeProperty('--p');
+      return;
+    }
+
+    /* Progress is measured against the anchors themselves, not the section
+       top. It has to be: `html` carries `scroll-padding-top` for the fixed
+       nav, so `scroll-snap-align:start` parks an anchor at that padding line
+       rather than at y=0. Reading the anchors makes the maths self-correcting
+       — change the padding, or the number of panels, and this still lands
+       each panel exactly in frame. */
+    const padTop = Number.parseFloat(
+      getComputedStyle(document.documentElement).scrollPaddingTop,
+    ) || 0;
+
+    const firstTop = anchors[0].getBoundingClientRect().top;
+    const lastTop = anchors[anchors.length - 1].getBoundingClientRect().top;
+    const total = lastTop - firstTop;   // constant: the track's travel distance
+
+    // 0 when the first anchor sits on the padding line, 1 when the last does.
+    const p = total > 0
+      ? Math.min(1, Math.max(0, (padTop - firstTop) / total))
+      : 0;
+
+    row.style.setProperty('--p', p.toFixed(4));
+
+    if (dots.length) {
+      const active = Math.min(dots.length - 1, Math.round(p * (dots.length - 1)));
+      dots.forEach((d, i) => d.classList.toggle('is-on', i === active));
+    }
+  };
+
+  addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }, { passive: true });
+
+  addEventListener('resize', update);
+  update();
+}
+
 /* ─── Page transition wipe ───────────────────────────────────────────── */
 export function initPageFx() {
   const wipe = document.querySelector('.page-wipe');
@@ -160,7 +225,7 @@ function boot() {
   const modules = [
     initBgGrid, initHeroGlyph, initCursor,
     initReveal, initTilt, initMagnetic, initCounters, initTypeIn,
-    initNavSpy, initPageFx, initMobileMenu,
+    initNavSpy, initProjectTrack, initPageFx, initMobileMenu,
   ];
   for (const init of modules) {
     try {
