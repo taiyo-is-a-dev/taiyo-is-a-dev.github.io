@@ -59,11 +59,20 @@ test('every page carries required metadata', () => {
     // Ukrainian everywhere except the English twin under /en/.
     const wantLang = file.startsWith('en/') ? 'en' : 'uk';
     assert.match(html, new RegExp(`<html[^>]+lang="${wantLang}"`), `${file}: lang=${wantLang}`);
-    /* Three characters, not ten. The tab titles are deliberately terse —
-       "dev/tano", "SPBT" — because a browser tab truncates anything longer into
-       noise; the descriptive form lives in og:title and the meta description,
-       which is what a search result and a social card actually show. The floor
-       exists only to catch an empty or placeholder title. */
+    /* The floor only catches an empty or placeholder title; the real rule is
+       that <title> repeats og:title verbatim, in that page's language. This
+       comment used to defend the terse forms — "dev/tano", "Taiyo.is-a.dev"
+       on both language roots — on the grounds that a tab truncates anything
+       longer. A tab truncates the tail, never the first three words, so length
+       costs nothing and the distinguishing words go first; meanwhile those
+       strings were what a search result, a bookmark and a shared history entry
+       actually showed, and the two roots shipped the same string in two
+       different languages. This repo's 404.html already shipped
+       title === og:title; the rest now match it, with one deliberate
+       exception: /ftl/ keeps a title that names no project. The school site is
+       unlaunched and <title> is what a search result prints as its headline,
+       so og:title stays descriptive because nobody shares that page. Restore
+       the pairing on launch day, with the rest of the case. */
     assert.match(html, /<title>[^<]{3,}<\/title>/, `${file}: title`);
     assert.match(html, /name="description"\s+content="[^"]{40,}"/, `${file}: description`);
     assert.match(html, /property="og:image"\s+content="[^"]+"/, `${file}: og:image`);

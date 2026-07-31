@@ -13,7 +13,7 @@
     document.documentElement.classList.add('js-stalled');
   }, 2500);
 </script>
-<title>Taiyo.is-a.dev</title>
+<title>Taiyo Asano — Discord bots, web, Unity, Blender</title>
 <meta name="description" content="Taiyo's portfolio: multi-module Discord bots with web panels, websites built end to end, Unity games and 3D in Blender. From the first polygon to a production deploy.">
 <meta name="author" content="Taiyo Asano">
 <meta name="theme-color" content="#050807">
@@ -150,19 +150,28 @@
         <article class="card card--skill" data-tilt data-reveal data-reveal-delay="3">
           <span class="card__num u-mono">03</span>
           <h3>Unity</h3>
-          <p>Game logic, scenes, mechanics.</p>
+          <p>Game logic, scenes, mechanics, platform builds.</p>
         </article>
         <article class="card card--skill" data-tilt data-reveal data-reveal-delay="4">
           <span class="card__num u-mono">04</span>
           <h3>Blender</h3>
-          <p>3D models, materials, renders.</p>
+          <p>3D models, materials, renders — for a game, a site or print.</p>
         </article>
       </div>
     </div>
   </section>
 
   <!-- ═══ 04–06 · My own projects, horizontally ══════════════════════ -->
-  <section class="pjtrack" id="projects" data-pjtrack>
+  <section class="pjtrack" id="projects" aria-labelledby="projects-title" data-pjtrack>
+    <!-- A section heading that occupies nothing. `.u-sr` (base.css:195) is
+         position:absolute, so the sticky stage, the three anchors and the
+         track's progress stay exactly where they were.
+         A visible heading cannot go inside the stage without new CSS: the row
+         is height:100% and the stage is overflow:clip, so any block in the flow
+         pushes the panels down by its own height and clips the same amount off
+         the bottom. The visible framing is carried by the panel eyebrows and
+         the `.pjtrack__hint` caption instead. -->
+    <h2 class="u-sr" id="projects-title">Three projects of my own, which I built and still run</h2>
     <span class="pjtrack__anchor pjtrack__anchor--1" aria-hidden="true"></span>
     <span class="pjtrack__anchor pjtrack__anchor--2" aria-hidden="true"></span>
     <span class="pjtrack__anchor pjtrack__anchor--3" aria-hidden="true"></span>
@@ -173,8 +182,8 @@
         <article class="pjslide pj" id="tano">
           <div class="u-container pj__inner">
             <div class="pj__copy">
-              <p class="u-mono u-eyebrow" data-reveal>Project 01 — my own</p>
-              <h2 class="pj__title" data-reveal data-reveal-delay="1">TANO</h2>
+              <p class="u-mono u-eyebrow" data-reveal>My own project — 01 / 03</p>
+              <h3 class="pj__title" data-reveal data-reveal-delay="1">TANO</h3>
               <p class="pj__lead" data-reveal data-reveal-delay="2">
                 A Discord bot that grew into an ecosystem: AI, music, moderation,
                 tickets, levels, private voice rooms, a message builder and its own
@@ -203,8 +212,8 @@
         <article class="pjslide pj" id="spbt">
           <div class="u-container pj__inner">
             <div class="pj__copy">
-              <p class="u-mono u-eyebrow" data-reveal>Project 02 — my own</p>
-              <h2 class="pj__title" data-reveal data-reveal-delay="1">SPBT</h2>
+              <p class="u-mono u-eyebrow" data-reveal>My own project — 02 / 03</p>
+              <h3 class="pj__title" data-reveal data-reveal-delay="1">SPBT</h3>
               <p class="pj__lead" data-reveal data-reveal-delay="2">
                 Small Projects by Taiyo — where people come to commission work.
                 This page is about me; that one lists what I'm
@@ -228,8 +237,8 @@
         <article class="pjslide pj" id="site">
           <div class="u-container pj__inner">
             <div class="pj__copy">
-              <p class="u-mono u-eyebrow" data-reveal>Project 03 — my own</p>
-              <h2 class="pj__title" data-reveal data-reveal-delay="1">This site</h2>
+              <p class="u-mono u-eyebrow" data-reveal>My own project — 03 / 03</p>
+              <h3 class="pj__title" data-reveal data-reveal-delay="1">This site</h3>
               <p class="pj__lead" data-reveal data-reveal-delay="2">
                 Static, with not one dependency: no framework, no build step, no CDN.
                 Fonts are self-hosted, the 3D emblem is drawn by hand on a 2D canvas,
@@ -238,7 +247,7 @@
               </p>
               <dl class="stats" data-reveal data-reveal-delay="3">
                 <div><dt class="u-mono">Dependencies</dt><dd data-counter="0">0</dd></div>
-                <div><dt class="u-mono">Tests</dt><dd data-counter="18">18</dd></div>
+                <div><dt class="u-mono">Tests</dt><dd data-counter="20">20</dd></div>
                 <div><dt class="u-mono">Colours in the palette</dt><dd data-counter="6">6</dd></div>
               </dl>
               <ul class="chips u-mono" data-reveal data-reveal-delay="4">
@@ -257,70 +266,76 @@
       <div class="pjtrack__dots" data-pjdots aria-hidden="true">
         <span class="is-on"></span><span></span><span></span>
       </div>
-      <p class="pjtrack__hint u-mono" aria-hidden="true">Scroll — the projects move sideways</p>
+      <p class="pjtrack__hint u-mono" aria-hidden="true">Three projects of my own — scroll</p>
     </div><!-- /.pjtrack__stage -->
   </section>
 
-  <!-- ═══ 07 · A school site — coming soon ═══════════════════════════
-       No institution name, no note on what the site ran on before, no legible
-       screenshot — deliberately. The project has not launched, and somebody
-       else's page is not shown before its release. The blur and the stamp are
-       CSS over an untouched file, so launch day removes them in one line. -->
-  <section class="section section--soft snap" id="ftl">
-    <div class="u-container">
-      <p class="u-mono u-eyebrow" data-reveal>In progress</p>
-      <h2 class="section__title" data-reveal data-reveal-delay="1">A school site — coming soon</h2>
-      <div class="teaser" data-reveal data-reveal-delay="2">
-        <div class="teaser__shot">
-          <img src="/assets/img/ftl-shot.jpg" width="1100" height="688" loading="lazy"
-               alt="Blurred fragment of an upcoming school site under a &quot;soon&quot; watermark">
-          <span class="teaser__mark" aria-hidden="true">
-            <i>SOON</i><i>SOON</i><i>SOON</i><i>SOON</i><i>SOON</i><i>SOON</i>
-          </span>
-        </div>
-        <div class="teaser__copy">
-          <p>
-            Redesigning a school's website.
-          </p>
-          <p class="u-muted">
-            Still being built, so neither the address nor the details are here
-            yet. Both arrive the moment it goes live.
-          </p>
-          <div class="card__actions">
-            <a class="btn" data-magnetic href="/ftl/" data-page-link hreflang="uk">Case study <span class="u-mono">UA</span> <span aria-hidden="true">→</span></a>
-          </div>
-          <p class="u-mono teaser__state">Status: in development</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- ═══ 07 · Not my own projects ═══════════════════════════════════
+       This was two sections and both were weak. #ftl gave a whole screen
+       to one unlaunched project and said "not ready yet" four times over:
+       eyebrow, h2, the stamp on the shot, the status line. #more — "I also
+       do this" — repeated Unity and Blender almost verbatim from the four
+       disciplines two screens above; its one unique item was the decks,
+       and that is the only entry on the page with a named client and a
+       case study.
 
-  <!-- ═══ 08 · Beyond the web ════════════════════════════════════════ -->
-  <section class="section snap" id="more">
+       Now it is one slide with a subject of its own. Not what I can do —
+       the disciplines already said that — but what I build that is not
+       for me: the track above holds my own projects, this holds the rest.
+
+       Two things about the heading are deliberate. It is present tense:
+       "made for other people" would be contradicted by "still being built"
+       four lines below it, which is the same defect spbt.pp.ua had to
+       rewrite its hero lead to remove. And the word "commissioned" is gone:
+       a client is named for the decks only, and nothing anywhere says the
+       school site is paid work.
+
+       The school screenshot is gone on purpose: it is blurred by design,
+       so it carries no information, and it was the largest object on the
+       screen. The file stays in assets/img — there is somewhere to put it
+       back on launch day, and tools/check.test.mjs requires it to exist on
+       disk regardless.
+
+       Two traces are left knowingly. layout.css:309 still explains the
+       padding-block cap with "#ftl 821px tall in an 800px viewport" — that
+       id is gone, but that file cannot be edited: base, layout and
+       components are byte identical to spbt-site. And the `.teaser*` rules
+       in components.css now have no markup on either site until launch. -->
+  <section class="section snap" id="beyond">
     <div class="u-container">
-      <p class="u-mono u-eyebrow" data-reveal>Beyond the web</p>
-      <h2 class="section__title" data-reveal data-reveal-delay="1">I also do this</h2>
+      <p class="u-mono u-eyebrow" data-reveal>Not my own projects</p>
+      <h2 class="section__title" data-reveal data-reveal-delay="1">I build for other people</h2>
       <div class="minor">
         <article class="minor__item" data-reveal data-reveal-delay="1">
           <h3>Interactive decks</h3>
-          <p>Talks that run in a browser with no internet — one self-contained HTML
-             file with the fonts baked in. Example: “Play, Emotions &amp; AI” for
-             UATEFL Lviv 2026. Commissioned by Olena Kobzar, published with her consent.
-             <a href="/decks/" data-page-link hreflang="uk">Case study (UA) →</a></p>
+          <p>Talks that run in a browser with no internet — one self-contained
+             HTML file with the fonts baked in. Example: “Play, Emotions &amp; AI”
+             for UATEFL Lviv 2026. Commissioned by Olena Kobzar, published with
+             her consent.</p>
+          <!-- A button rather than a text link, against the `.minor` comment
+               ("no buttons"): base.css:101 strips both colour and underline
+               from links, so "Case study →" inside the muted `.minor__item p`
+               differed from body text by an arrow alone. The aria-label is
+               there because two "Case study" links now sit side by side in a
+               screen reader's link list; the visible string is contained in
+               the name, so voice control still matches. -->
+          <div class="card__actions">
+            <a class="btn btn--sm" data-magnetic href="/decks/" data-page-link hreflang="uk" aria-label="Case study (UA): interactive decks">Case study (UA) <span aria-hidden="true">→</span></a>
+          </div>
         </article>
         <article class="minor__item" data-reveal data-reveal-delay="2">
-          <h3>Unity</h3>
-          <p>Game logic, scenes, mechanics, platform builds.</p>
-        </article>
-        <article class="minor__item" data-reveal data-reveal-delay="3">
-          <h3>Blender</h3>
-          <p>3D models, materials, renders — for a game, a site or print.</p>
+          <h3>A school site</h3>
+          <p>Redesigning it now. Still being built, so neither the address nor
+             the details are here yet.</p>
+          <div class="card__actions">
+            <a class="btn btn--sm" data-magnetic href="/ftl/" data-page-link hreflang="uk" aria-label="Case study (UA): a school site">Case study (UA) <span aria-hidden="true">→</span></a>
+          </div>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- ═══ 09 · Contact ═══════════════════════════════════════════════ -->
+  <!-- ═══ 08 · Contact ═══════════════════════════════════════════════ -->
   <section class="section section--soft snap" id="contact">
     <div class="u-container">
       <p class="u-mono u-eyebrow" data-reveal>Contact</p>

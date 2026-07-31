@@ -14,7 +14,7 @@
     document.documentElement.classList.add('js-stalled');
   }, 2500);
 </script>
-<title>Taiyo.is-a.dev</title>
+<title>Taiyo Asano — Discord-боти, веб, Unity, Blender</title>
 <meta name="description" content="Портфоліо Таійо: багатомодульні Discord-боти з веб-панелями, сайти під ключ, ігри на Unity та 3D у Blender. Від першого полігону до продакшн-деплою.">
 <meta name="author" content="Taiyo Asano">
 <meta name="theme-color" content="#050807">
@@ -147,12 +147,12 @@
         <article class="card card--skill" data-tilt data-reveal data-reveal-delay="3">
           <span class="card__num u-mono">03</span>
           <h3>Unity</h3>
-          <p>Ігрова логіка, сцени, механіки.</p>
+          <p>Ігрова логіка, сцени, механіки, збірки під платформи.</p>
         </article>
         <article class="card card--skill" data-tilt data-reveal data-reveal-delay="4">
           <span class="card__num u-mono">04</span>
           <h3>Blender</h3>
-          <p>3D-моделі, матеріали, рендери.</p>
+          <p>3D-моделі, матеріали, рендери — під гру, сайт або друк.</p>
         </article>
       </div>
     </div>
@@ -164,7 +164,16 @@
        вертикальної прокрутки — тобто це справжній скрол, а не перехват
        колеса: скролбар, клавіші й пошук по сторінці працюють. Три
        невидимі якорі дають scroll-snap точки, по одній на проєкт.     -->
-  <section class="pjtrack" id="projects" data-pjtrack>
+  <section class="pjtrack" id="projects" aria-labelledby="projects-title" data-pjtrack>
+    <!-- Заголовок секції, який не займає жодного пікселя. `.u-sr`
+         (base.css:195) — це position:absolute, тож sticky-сцена, три якорі
+         й прогрес доріжки лишаються рівно там, де були.
+         Видимий заголовок усередину сцени без нового CSS не ставиться: рядок
+         має height:100%, а сцена — overflow:clip, тому будь-який блок у потоці
+         зсуває панелі вниз рівно на свою висоту й стільки ж зрізає знизу.
+         Видиме обрамлення несуть надрядки панелей і підпис
+         `.pjtrack__hint`. -->
+    <h2 class="u-sr" id="projects-title">Три власні проєкти, які я зробив і веду</h2>
     <span class="pjtrack__anchor pjtrack__anchor--1" aria-hidden="true"></span>
     <span class="pjtrack__anchor pjtrack__anchor--2" aria-hidden="true"></span>
     <span class="pjtrack__anchor pjtrack__anchor--3" aria-hidden="true"></span>
@@ -175,8 +184,8 @@
         <article class="pjslide pj" id="tano">
           <div class="u-container pj__inner">
       <div class="pj__copy">
-        <p class="u-mono u-eyebrow" data-reveal>Проєкт 01 — власний</p>
-        <h2 class="pj__title" data-reveal data-reveal-delay="1">TANO</h2>
+        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 01 / 03</p>
+        <h3 class="pj__title" data-reveal data-reveal-delay="1">TANO</h3>
         <p class="pj__lead" data-reveal data-reveal-delay="2">
           Discord-бот, який виріс в екосистему: штучний інтелект, музика, модерація,
           тікети, рівні, приватні войси, конструктор повідомлень і власна веб-панель
@@ -205,8 +214,8 @@
         <article class="pjslide pj" id="spbt">
           <div class="u-container pj__inner">
       <div class="pj__copy">
-        <p class="u-mono u-eyebrow" data-reveal>Проєкт 02 — власний</p>
-        <h2 class="pj__title" data-reveal data-reveal-delay="1">SPBT</h2>
+        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 02 / 03</p>
+        <h3 class="pj__title" data-reveal data-reveal-delay="1">SPBT</h3>
         <p class="pj__lead" data-reveal data-reveal-delay="2">
           Small Projects by Taiyo — місце, куди звертаються за роботою. Ця сторінка
           про мене, а там зібрано, що я <strong>готовий зробити вам</strong>:
@@ -229,8 +238,8 @@
         <article class="pjslide pj" id="site">
           <div class="u-container pj__inner">
       <div class="pj__copy">
-        <p class="u-mono u-eyebrow" data-reveal>Проєкт 03 — власний</p>
-        <h2 class="pj__title" data-reveal data-reveal-delay="1">Цей сайт</h2>
+        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 03 / 03</p>
+        <h3 class="pj__title" data-reveal data-reveal-delay="1">Цей сайт</h3>
         <p class="pj__lead" data-reveal data-reveal-delay="2">
           Статика без жодної залежності: ні фреймворку, ні збірки, ні CDN.
           Шрифти самохостяться, 3D-емблема намальована на 2D-канві руками,
@@ -239,7 +248,7 @@
         </p>
         <dl class="stats" data-reveal data-reveal-delay="3">
           <div><dt class="u-mono">Залежностей</dt><dd data-counter="0">0</dd></div>
-          <div><dt class="u-mono">Тестів</dt><dd data-counter="18">18</dd></div>
+          <div><dt class="u-mono">Тестів</dt><dd data-counter="20">20</dd></div>
           <div><dt class="u-mono">Кольорів у палітрі</dt><dd data-counter="6">6</dd></div>
         </dl>
         <ul class="chips u-mono" data-reveal data-reveal-delay="4">
@@ -258,70 +267,76 @@
       <div class="pjtrack__dots" data-pjdots aria-hidden="true">
         <span class="is-on"></span><span></span><span></span>
       </div>
-      <p class="pjtrack__hint u-mono" aria-hidden="true">Гортай — проєкти йдуть убік</p>
+      <p class="pjtrack__hint u-mono" aria-hidden="true">Три власні проєкти — гортай</p>
     </div><!-- /.pjtrack__stage -->
   </section>
 
-  <!-- ═══ 07 · Сайт школи — далі буде ════════════════════════════════
-       Ні назви закладу, ні того, на чому сайт працював раніше, ні читабельного
-       знімка тут немає, і це навмисно: проєкт не запущено, а чужу сторінку до
-       релізу не показують. Розмиття та штамп накладені CSS-ом, не вшиті у
-       файл, тому на день запуску знімаються одним рядком.              -->
-  <section class="section section--soft snap" id="ftl">
-    <div class="u-container">
-      <p class="u-mono u-eyebrow" data-reveal>На підході</p>
-      <h2 class="section__title" data-reveal data-reveal-delay="1">Сайт школи — далі буде</h2>
-      <div class="teaser" data-reveal data-reveal-delay="2">
-        <div class="teaser__shot">
-          <img src="/assets/img/ftl-shot.jpg" width="1100" height="688" loading="lazy"
-               alt="Розмитий фрагмент майбутнього сайту школи під водяним знаком «скоро»">
-          <span class="teaser__mark" aria-hidden="true">
-            <i>СКОРО</i><i>СКОРО</i><i>СКОРО</i><i>СКОРО</i><i>СКОРО</i><i>СКОРО</i>
-          </span>
-        </div>
-        <div class="teaser__copy">
-          <p>
-            Оновлюю дизайн сайту школи.
-          </p>
-          <p class="u-muted">
-            Проєкт ще в роботі, тому ні адреси, ні подробиць тут поки немає.
-            Щойно запуститься — з'явиться і те, і те.
-          </p>
-          <div class="card__actions">
-            <a class="btn" data-magnetic href="/ftl/" data-page-link>Кейс <span aria-hidden="true">→</span></a>
-          </div>
-          <p class="u-mono teaser__state">Статус: у розробці</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- ═══ 07 · Не свої проєкти ═══════════════════════════════════════
+       Тут було дві секції, і обидві були слабкі. #ftl віддавав цілий
+       екран одному незапущеному проєкту й казав «ще не готово» чотири
+       рази поспіль: надрядок, h2, штамп на знімку, рядок статусу.
+       #more під назвою «Ще роблю це» повторював Unity та Blender майже
+       дослівно з «Чотирьох напрямів» двома екранами вище — унікальним
+       у ньому був один пункт, презентації, і саме він єдиний має
+       названу замовницю та сторінку кейса.
 
-  <!-- ═══ 08 · Інше ══════════════════════════════════════════════════ -->
-  <section class="section snap" id="more">
+       Тепер це один слайд із власним предметом. Не «що я вмію» — це вже
+       сказано в напрямах, — а «що я роблю не для себе»: трек вище тримає
+       мої власні проєкти, тут лежить робота на інших.
+
+       Дві речі в заголовку навмисні. Час теперішній: «зроблено для інших»
+       суперечило б рядку «ще в роботі» чотирма рядками нижче — тій самій
+       поломці, через яку на spbt.pp.ua переписували лід героя. І слова
+       «на замовлення» тут немає: замовниця названа лише в презентаціях,
+       а про сайт школи ніде не сказано, що це оплачена робота.
+
+       Знімок сайту школи прибрано навмисно: він розмитий за задумом,
+       тобто не несе жодної інформації, а був найбільшим об'єктом на
+       екрані. Сам файл лишається в assets/img — на день запуску його є
+       куди повернути, і тест tools/check.test.mjs усе одно вимагає, щоб
+       він був на диску.
+
+       Два сліди лишаються знаними, а не забутими. layout.css:309 досі
+       пояснює обмеження padding-block через «#ftl 821px tall in an 800px
+       viewport» — цього id більше немає, але правити той файл не можна:
+       base, layout і components побайтово однакові зі spbt-site. І
+       правила `.teaser*` у components.css лишаються без розмітки на
+       обох сайтах до дня запуску.                                   -->
+  <section class="section snap" id="beyond">
     <div class="u-container">
-      <p class="u-mono u-eyebrow" data-reveal>Поза вебом</p>
-      <h2 class="section__title" data-reveal data-reveal-delay="1">Ще роблю це</h2>
+      <p class="u-mono u-eyebrow" data-reveal>Не свої проєкти</p>
+      <h2 class="section__title" data-reveal data-reveal-delay="1">Роблю для інших</h2>
       <div class="minor">
         <article class="minor__item" data-reveal data-reveal-delay="1">
           <h3>Інтерактивні презентації</h3>
           <p>Доповіді, що працюють у браузері без інтернету — один самодостатній
              HTML-файл із вшитими шрифтами. Приклад — «Play, Emotions &amp; AI»
              для UATEFL Lviv 2026. Замовниця — Olena Kobzar, публікується
-             за її згодою. <a href="/decks/" data-page-link>Кейс →</a></p>
+             за її згодою.</p>
+          <!-- Кнопка, а не текстове посилання, всупереч коментарю до `.minor`
+               («no buttons»): base.css:101 знімає з посилань і колір, і
+               підкреслення, тож «Кейс →» усередині сірого `.minor__item p`
+               відрізнявся від тексту лише стрілкою. aria-label — бо тепер
+               два посилання «Кейс» стоять поруч у списку посилань екранного
+               читача; видимий текст входить у назву, тому керування голосом
+               теж працює. -->
+          <div class="card__actions">
+            <a class="btn btn--sm" data-magnetic href="/decks/" data-page-link aria-label="Кейс презентацій">Кейс <span aria-hidden="true">→</span></a>
+          </div>
         </article>
         <article class="minor__item" data-reveal data-reveal-delay="2">
-          <h3>Unity</h3>
-          <p>Ігрова логіка, сцени, механіки, збірки під платформи.</p>
-        </article>
-        <article class="minor__item" data-reveal data-reveal-delay="3">
-          <h3>Blender</h3>
-          <p>3D-моделі, матеріали, рендери — під гру, сайт або друк.</p>
+          <h3>Сайт школи</h3>
+          <p>Оновлюю дизайн. Проєкт ще в роботі, тому ні адреси, ні подробиць
+             тут поки немає.</p>
+          <div class="card__actions">
+            <a class="btn btn--sm" data-magnetic href="/ftl/" data-page-link aria-label="Кейс сайту школи">Кейс <span aria-hidden="true">→</span></a>
+          </div>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- ═══ 09 · Контакти ══════════════════════════════════════════════ -->
+  <!-- ═══ 08 · Контакти ══════════════════════════════════════════════ -->
   <section class="section section--soft snap" id="contact">
     <div class="u-container">
       <p class="u-mono u-eyebrow" data-reveal>Контакти</p>
