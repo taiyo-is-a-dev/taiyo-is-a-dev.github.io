@@ -8,10 +8,12 @@ export const ALLOWED_HOSTS = [
   'tano.pp.ua',
   'taiyo.is-a.dev',
   'spbt.pp.ua',
-  /* [redacted] is deliberately absent. The school site is not launched, so no
-     page may link to it yet — dropping the host from this list turns that
-     decision into something the test suite enforces instead of something a
-     future edit can quietly undo. Add it back on launch day. */
+  /* The school site's host is deliberately absent, and deliberately not named
+     here either. It is not launched, so no page may link to it yet — leaving
+     the host out of this list turns that decision into something the test
+     suite enforces rather than something a future edit can quietly undo.
+     Naming it in a comment would have defeated the point: this file is public.
+     Add the host on launch day, with the rest of the case. */
   'www.w3.org',
 ];
 
