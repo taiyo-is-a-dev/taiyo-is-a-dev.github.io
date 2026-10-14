@@ -629,10 +629,15 @@
 .pjtrack__hint{display:none;}
 
 @media (prefers-reduced-motion:no-preference) and (min-width:760px){
-  .pjtrack{position:relative;height:300svh;}
+  /* --pj-n is the number of panels. It defaults to 3 and a page with a
+     different count sets it on the section itself (style="--pj-n:4"); the
+     height, the row width, the panel width and the travel all follow it, so
+     adding a project never means editing this shared file again. */
+  .pjtrack{position:relative;height:calc(var(--pj-n,3) * 100svh);}
   /* The stage stays a block on purpose. As a flex container it would treat
-     the row as a flex item, and flex items shrink by default — `width:300%`
-     collapsed back to 100% and all three panels squeezed onto one screen.
+     the row as a flex item, and flex items shrink by default — the row's
+     width (300% for three panels) collapsed back to 100% and all three panels
+     squeezed onto one screen.
      Vertical centring lives on the panels instead. */
   .pjtrack__stage{
     position:sticky;
@@ -657,14 +662,15 @@
        the track must render correctly before the script runs at all. */
     --p:0;
     display:flex;
-    width:300%;
+    width:calc(var(--pj-n,3) * 100%);
     height:100%;
-    transform:translate3d(calc(var(--p) * -66.6667%),0,0);
+    /* Travel is (n-1) panels out of n: -66.6667% for three, -75% for four. */
+    transform:translate3d(calc(var(--p) * (1 - var(--pj-n,3)) * 100% / var(--pj-n,3)),0,0);
     will-change:transform;
   }
   .pjslide{
-    flex:0 0 33.3333%;
-    width:33.3333%;
+    flex:0 0 calc(100% / var(--pj-n,3));
+    width:calc(100% / var(--pj-n,3));
     min-height:0;
     height:100%;
     scroll-snap-align:none;
@@ -681,6 +687,8 @@
   .pjtrack__anchor--1{top:0;}
   .pjtrack__anchor--2{top:100svh;}
   .pjtrack__anchor--3{top:200svh;}
+  .pjtrack__anchor--4{top:300svh;}
+  .pjtrack__anchor--5{top:400svh;}
 
   .pjtrack__dots{
     display:flex;

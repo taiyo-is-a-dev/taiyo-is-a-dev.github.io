@@ -8,6 +8,7 @@ export const ALLOWED_HOSTS = [
   'tano.pp.ua',
   'taiyo.is-a.dev',
   'spbt.pp.ua',
+  'github.com',   /* the open-source SPBT_DB repo */
   /* The school site's host is deliberately absent, and deliberately not named
      here either. It is not launched, so no page may link to it yet — leaving
      the host out of this list turns that decision into something the test

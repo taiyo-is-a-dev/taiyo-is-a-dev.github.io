@@ -160,6 +160,26 @@ test('both languages ship the same slides', () => {
   assert.deepEqual(ids('en/index.html'), ids('index.html'));
 });
 
+// The project track's geometry lives in components.css and is driven by one
+// number, --pj-n (default 3). A panel added without updating it, its anchors
+// or its dots renders, but the last panel never scrolls into frame.
+test('the project track counts its own panels', () => {
+  for (const file of pages()) {
+    const html = readHtml(file, ROOT);
+    const track = /<section class="pjtrack"[^>]*>([\s\S]*?)<\/section>/.exec(html);
+    if (!track) continue;
+    const n = (track[1].match(/<article class="pjslide/g) ?? []).length;
+    const declared = Number(/--pj-n:\s*(\d+)/.exec(track[0])?.[1] ?? 3);
+    assert.equal(declared, n, `${file}: --pj-n is ${declared} but the track has ${n} panels`);
+    assert.equal((track[1].match(/pjtrack__anchor--\d/g) ?? []).length, n, `${file}: one snap anchor per panel`);
+    const dots = /data-pjdots[^>]*>([\s\S]*?)<\/div>/.exec(track[1])?.[1] ?? '';
+    assert.equal((dots.match(/<span/g) ?? []).length, n, `${file}: one dot per panel`);
+    for (const [, k, of] of track[1].matchAll(/(\d\d) \/ (\d\d)<\/p>/g)) {
+      assert.equal(Number(of), n, `${file}: eyebrow ${k} / ${of} should count to ${n}`);
+    }
+  }
+});
+
 test('404 page is excluded from indexing', () => {
   assert.match(readHtml('404.html', ROOT), /name="robots"\s+content="noindex"/);
 });

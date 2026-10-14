@@ -159,12 +159,13 @@
   </section>
 
   <!-- ═══ 04–06 · Власні проєкти, горизонтально ══════════════════════
-       Три проєкти, що належать мені, їдуть справа наліво. Секція висока,
+       Чотири проєкти, що належать мені, їдуть справа наліво. Секція висока,
        всередині sticky-сцена, а рух дає translateX від прогресу звичайної
        вертикальної прокрутки — тобто це справжній скрол, а не перехват
-       колеса: скролбар, клавіші й пошук по сторінці працюють. Три
-       невидимі якорі дають scroll-snap точки, по одній на проєкт.     -->
-  <section class="pjtrack" id="projects" aria-labelledby="projects-title" data-pjtrack>
+       колеса: скролбар, клавіші й пошук по сторінці працюють. Чотири
+       невидимі якорі дають scroll-snap точки, по одній на проєкт; їхню
+       кількість задає --pj-n на секції, а components.css рахує з неї решту.     -->
+  <section class="pjtrack" id="projects" aria-labelledby="projects-title" data-pjtrack style="--pj-n:4">
     <!-- Заголовок секції, який не займає жодного пікселя. `.u-sr`
          (base.css:195) — це position:absolute, тож sticky-сцена, три якорі
          й прогрес доріжки лишаються рівно там, де були.
@@ -173,10 +174,11 @@
          зсуває панелі вниз рівно на свою висоту й стільки ж зрізає знизу.
          Видиме обрамлення несуть надрядки панелей і підпис
          `.pjtrack__hint`. -->
-    <h2 class="u-sr" id="projects-title">Три власні проєкти, які я зробив і веду</h2>
+    <h2 class="u-sr" id="projects-title">Чотири власні проєкти, які я зробив і веду</h2>
     <span class="pjtrack__anchor pjtrack__anchor--1" aria-hidden="true"></span>
     <span class="pjtrack__anchor pjtrack__anchor--2" aria-hidden="true"></span>
     <span class="pjtrack__anchor pjtrack__anchor--3" aria-hidden="true"></span>
+    <span class="pjtrack__anchor pjtrack__anchor--4" aria-hidden="true"></span>
 
     <div class="pjtrack__stage">
       <div class="pjtrack__row" data-pjrow>
@@ -184,7 +186,7 @@
         <article class="pjslide pj" id="tano">
           <div class="u-container pj__inner">
       <div class="pj__copy">
-        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 01 / 03</p>
+        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 01 / 04</p>
         <h3 class="pj__title" data-reveal data-reveal-delay="1">TANO</h3>
         <p class="pj__lead" data-reveal data-reveal-delay="2">
           Discord-бот, який виріс в екосистему: штучний інтелект, музика, модерація,
@@ -211,10 +213,35 @@
           </div>
         </article>
 
+        <article class="pjslide pj" id="spbt-db">
+          <div class="u-container pj__inner">
+      <div class="pj__copy">
+        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 02 / 04</p>
+        <h3 class="pj__title" data-reveal data-reveal-delay="1">SPBT_DB</h3>
+        <p class="pj__lead" data-reveal data-reveal-delay="2">
+          Вбудована база даних для Node.js, яку я написав для TANO замість
+          JSON-файлів: індекси, TTL, планувальник і векторний пошук. Код відкритий.
+        </p>
+        <dl class="stats" data-reveal data-reveal-delay="3">
+          <div><dt class="u-mono">Читання зі 100 000</dt><dd>0,8 мкс</dd></div>
+          <div><dt class="u-mono">kill -9 без втрат</dt><dd>100/100</dd></div>
+          <div><dt class="u-mono">Рядків коду</dt><dd>3 700</dd></div>
+        </dl>
+        <div class="card__actions" data-reveal data-reveal-delay="5">
+          <a class="btn btn--primary" data-magnetic href="https://github.com/DanyloKob/SPBT_DB" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div class="pj__visual pj__visual--type" data-reveal data-reveal-delay="2" aria-hidden="true">
+        <span class="pj__wordmark">SPBT_DB</span>
+        <span class="pj__wordsub u-mono">open source · MIT</span>
+      </div>
+          </div>
+        </article>
+
         <article class="pjslide pj" id="spbt">
           <div class="u-container pj__inner">
       <div class="pj__copy">
-        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 02 / 03</p>
+        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 03 / 04</p>
         <h3 class="pj__title" data-reveal data-reveal-delay="1">SPBT</h3>
         <p class="pj__lead" data-reveal data-reveal-delay="2">
           Small Projects by Taiyo — місце, куди звертаються за роботою. Ця сторінка
@@ -238,7 +265,7 @@
         <article class="pjslide pj" id="site">
           <div class="u-container pj__inner">
       <div class="pj__copy">
-        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 03 / 03</p>
+        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 04 / 04</p>
         <h3 class="pj__title" data-reveal data-reveal-delay="1">Цей сайт</h3>
         <p class="pj__lead" data-reveal data-reveal-delay="2">
           Статика без жодної залежності: ні фреймворку, ні збірки, ні CDN.
@@ -248,7 +275,7 @@
         </p>
         <dl class="stats" data-reveal data-reveal-delay="3">
           <div><dt class="u-mono">Залежностей</dt><dd data-counter="0">0</dd></div>
-          <div><dt class="u-mono">Тестів</dt><dd data-counter="20">20</dd></div>
+          <div><dt class="u-mono">Тестів</dt><dd data-counter="21">21</dd></div>
           <div><dt class="u-mono">Кольорів у палітрі</dt><dd data-counter="6">6</dd></div>
         </dl>
         <ul class="chips u-mono" data-reveal data-reveal-delay="4">
@@ -265,9 +292,9 @@
       </div><!-- /.pjtrack__row -->
 
       <div class="pjtrack__dots" data-pjdots aria-hidden="true">
-        <span class="is-on"></span><span></span><span></span>
+        <span class="is-on"></span><span></span><span></span><span></span>
       </div>
-      <p class="pjtrack__hint u-mono" aria-hidden="true">Три власні проєкти — гортай</p>
+      <p class="pjtrack__hint u-mono" aria-hidden="true">Чотири власні проєкти — гортай</p>
     </div><!-- /.pjtrack__stage -->
   </section>
 

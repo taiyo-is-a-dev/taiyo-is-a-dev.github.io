@@ -162,7 +162,7 @@
   </section>
 
   <!-- ═══ 04–06 · My own projects, horizontally ══════════════════════ -->
-  <section class="pjtrack" id="projects" aria-labelledby="projects-title" data-pjtrack>
+  <section class="pjtrack" id="projects" aria-labelledby="projects-title" data-pjtrack style="--pj-n:4">
     <!-- A section heading that occupies nothing. `.u-sr` (base.css:195) is
          position:absolute, so the sticky stage, the three anchors and the
          track's progress stay exactly where they were.
@@ -171,10 +171,11 @@
          pushes the panels down by its own height and clips the same amount off
          the bottom. The visible framing is carried by the panel eyebrows and
          the `.pjtrack__hint` caption instead. -->
-    <h2 class="u-sr" id="projects-title">Three projects of my own, which I built and still run</h2>
+    <h2 class="u-sr" id="projects-title">Four projects of my own, which I built and still run</h2>
     <span class="pjtrack__anchor pjtrack__anchor--1" aria-hidden="true"></span>
     <span class="pjtrack__anchor pjtrack__anchor--2" aria-hidden="true"></span>
     <span class="pjtrack__anchor pjtrack__anchor--3" aria-hidden="true"></span>
+    <span class="pjtrack__anchor pjtrack__anchor--4" aria-hidden="true"></span>
 
     <div class="pjtrack__stage">
       <div class="pjtrack__row" data-pjrow>
@@ -182,7 +183,7 @@
         <article class="pjslide pj" id="tano">
           <div class="u-container pj__inner">
             <div class="pj__copy">
-              <p class="u-mono u-eyebrow" data-reveal>My own project — 01 / 03</p>
+              <p class="u-mono u-eyebrow" data-reveal>My own project — 01 / 04</p>
               <h3 class="pj__title" data-reveal data-reveal-delay="1">TANO</h3>
               <p class="pj__lead" data-reveal data-reveal-delay="2">
                 A Discord bot that grew into an ecosystem: AI, music, moderation,
@@ -209,10 +210,35 @@
           </div>
         </article>
 
+        <article class="pjslide pj" id="spbt-db">
+          <div class="u-container pj__inner">
+            <div class="pj__copy">
+              <p class="u-mono u-eyebrow" data-reveal>My own project — 02 / 04</p>
+              <h3 class="pj__title" data-reveal data-reveal-delay="1">SPBT_DB</h3>
+              <p class="pj__lead" data-reveal data-reveal-delay="2">
+                An embedded database for Node.js that I wrote for TANO to replace
+                its JSON files: indexes, TTL, a scheduler and vector search. The code is open.
+              </p>
+              <dl class="stats" data-reveal data-reveal-delay="3">
+                <div><dt class="u-mono">Read 1 of 100,000</dt><dd>0.8 µs</dd></div>
+                <div><dt class="u-mono">kill -9, no loss</dt><dd>100/100</dd></div>
+                <div><dt class="u-mono">Lines of code</dt><dd>3,700</dd></div>
+              </dl>
+              <div class="card__actions" data-reveal data-reveal-delay="5">
+                <a class="btn btn--primary" data-magnetic href="https://github.com/DanyloKob/SPBT_DB" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+            <div class="pj__visual pj__visual--type" data-reveal data-reveal-delay="2" aria-hidden="true">
+              <span class="pj__wordmark">SPBT_DB</span>
+              <span class="pj__wordsub u-mono">open source · MIT</span>
+            </div>
+          </div>
+        </article>
+
         <article class="pjslide pj" id="spbt">
           <div class="u-container pj__inner">
             <div class="pj__copy">
-              <p class="u-mono u-eyebrow" data-reveal>My own project — 02 / 03</p>
+              <p class="u-mono u-eyebrow" data-reveal>My own project — 03 / 04</p>
               <h3 class="pj__title" data-reveal data-reveal-delay="1">SPBT</h3>
               <p class="pj__lead" data-reveal data-reveal-delay="2">
                 Small Projects by Taiyo — where people come to commission work.
@@ -237,7 +263,7 @@
         <article class="pjslide pj" id="site">
           <div class="u-container pj__inner">
             <div class="pj__copy">
-              <p class="u-mono u-eyebrow" data-reveal>My own project — 03 / 03</p>
+              <p class="u-mono u-eyebrow" data-reveal>My own project — 04 / 04</p>
               <h3 class="pj__title" data-reveal data-reveal-delay="1">This site</h3>
               <p class="pj__lead" data-reveal data-reveal-delay="2">
                 Static, with not one dependency: no framework, no build step, no CDN.
@@ -247,7 +273,7 @@
               </p>
               <dl class="stats" data-reveal data-reveal-delay="3">
                 <div><dt class="u-mono">Dependencies</dt><dd data-counter="0">0</dd></div>
-                <div><dt class="u-mono">Tests</dt><dd data-counter="20">20</dd></div>
+                <div><dt class="u-mono">Tests</dt><dd data-counter="21">21</dd></div>
                 <div><dt class="u-mono">Colours in the palette</dt><dd data-counter="6">6</dd></div>
               </dl>
               <ul class="chips u-mono" data-reveal data-reveal-delay="4">
@@ -264,9 +290,9 @@
       </div><!-- /.pjtrack__row -->
 
       <div class="pjtrack__dots" data-pjdots aria-hidden="true">
-        <span class="is-on"></span><span></span><span></span>
+        <span class="is-on"></span><span></span><span></span><span></span>
       </div>
-      <p class="pjtrack__hint u-mono" aria-hidden="true">Three projects of my own — scroll</p>
+      <p class="pjtrack__hint u-mono" aria-hidden="true">Four projects of my own — scroll</p>
     </div><!-- /.pjtrack__stage -->
   </section>
 
