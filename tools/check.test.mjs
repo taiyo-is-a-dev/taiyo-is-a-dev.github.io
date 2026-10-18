@@ -226,6 +226,7 @@ test('image assets exist and stay within budget (KB)', () => {
     'tano-banner.png': 300,
     'ftl-shot.jpg': 140,
     'deck-shot.jpg': 140,
+    'tano-shot.jpg': 140,
     'og.png': 220,
     'tano-logo.svg': 8,
     'favicon.svg': 8,
