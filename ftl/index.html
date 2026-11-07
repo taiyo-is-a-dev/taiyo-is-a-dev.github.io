@@ -9,33 +9,60 @@
     document.documentElement.classList.add('js-stalled');
   }, 2500);
 </script>
-<title>Проєкт у розробці</title>
-<!-- Ця сторінка свідомо майже порожня. Сайт школи не запущено, і поки це так,
-     звідси не має бути видно ні назви закладу, ні того, на чому він працював
-     раніше, ні знімків. Тут був блок «було / стало / що далі» з їхньою старою
-     CMS і незамазаний скріншот головної — тобто рівно те, чого не показують до
-     релізу. Лишився один рядок. На день запуску сюди повертається повний кейс:
-     історія в git, нічого не втрачено. -->
-<meta name="description" content="Оновлення дизайну сайту школи. Проєкт у розробці — подробиці й адреса зʼявляться після запуску.">
+<script>
+  /* Мова. Той самий порядок, що й на spbt.pp.ua: явний клік по UA/EN важить
+     більше за мову браузера, а мова браузера більше за «лишитися». Лише
+     українські сторінки перенаправляють: /en/ люди пересилають, і вона мусить
+     відкриватися англійською на будь-якому браузері. Inline і ES5, бо модуль
+     відкладений і українська сторінка встигла б намалюватися. */
+  (function () {
+    var KEY = 'taiyo-lang';
+    var store = null;
+    try { store = window.localStorage; } catch (err) {}
+    document.addEventListener('click', function (e) {
+      var opt = e.target && e.target.closest && e.target.closest('[data-lang]');
+      if (!opt || !store) return;
+      try { store.setItem(KEY, opt.getAttribute('data-lang')); } catch (err) {}
+    });
+    var saved = null;
+    try { saved = store && store.getItem(KEY); } catch (err) {}
+    if (saved === 'uk') return;
+    if (saved !== 'en') {
+      if (document.referrer.indexOf(location.origin) === 0) return;
+      var langs = navigator.languages || [navigator.language || ''];
+      for (var i = 0; i < langs.length; i += 1) {
+        if (/^uk\b/i.test(String(langs[i]))) return;
+      }
+    }
+    location.replace('/en/ftl/' + location.search + location.hash);
+  })();
+</script>
+<title>Сайт Фізико-технічного ліцею: було і стало</title>
+<meta name="description" content="Як сайт Фізико-технічного ліцею перейшов із Joomla 2.5 на власну систему з панеллю. Порівняння старого й нового сайту на комп’ютері та телефоні.">
 <meta name="author" content="Taiyo Asano">
 <meta name="theme-color" content="#050807">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://taiyo.is-a.dev/ftl/">
+<link rel="alternate" hreflang="uk" href="https://taiyo.is-a.dev/ftl/">
+<link rel="alternate" hreflang="en" href="https://taiyo.is-a.dev/en/ftl/">
+<link rel="alternate" hreflang="x-default" href="https://taiyo.is-a.dev/ftl/">
 <meta property="og:type" content="article">
 <meta property="og:locale" content="uk_UA">
 <meta property="og:site_name" content="Taiyo Asano">
-<meta property="og:title" content="Сайт школи — у розробці">
-<meta property="og:description" content="Оновлення дизайну сайту школи. Проєкт у розробці — подробиці зʼявляться після запуску.">
+<meta property="og:title" content="Сайт Фізико-технічного ліцею: було і стало">
+<meta property="og:description" content="Як сайт Фізико-технічного ліцею перейшов із Joomla 2.5 на власну систему з панеллю. Порівняння старого й нового сайту на комп’ютері та телефоні.">
 <meta property="og:url" content="https://taiyo.is-a.dev/ftl/">
-<meta property="og:image" content="https://taiyo.is-a.dev/assets/img/og.png">
+<meta property="og:image" content="https://taiyo.is-a.dev/assets/img/ftl-after.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Сайт школи — у розробці">
-<meta name="twitter:description" content="Оновлення дизайну сайту школи. Проєкт у розробці.">
-<meta name="twitter:image" content="https://taiyo.is-a.dev/assets/img/og.png">
+<meta name="twitter:title" content="Сайт Фізико-технічного ліцею: було і стало">
+<meta name="twitter:description" content="Як сайт Фізико-технічного ліцею перейшов із Joomla 2.5 на власну систему з панеллю. Порівняння старого й нового сайту на комп’ютері та телефоні.">
+<meta name="twitter:image" content="https://taiyo.is-a.dev/assets/img/ftl-after.jpg">
 <link rel="stylesheet" href="/assets/css/base.css">
 <link rel="stylesheet" href="/assets/css/layout.css">
 <link rel="stylesheet" href="/assets/css/components.css">
+<link rel="stylesheet" href="/assets/css/taiyo.css">
 <script type="module" src="/assets/js/site.js"></script>
+<script type="module" src="/assets/js/compare.js"></script>
 </head>
 <body>
 <canvas id="bg-grid" aria-hidden="true"></canvas>
@@ -43,14 +70,19 @@
 <div class="cursor-ring" aria-hidden="true"></div>
 <div class="page-wipe" aria-hidden="true"></div>
 
-<a class="u-sr" href="#next">Перейти до вмісту</a>
+<a class="u-sr" href="#result">Перейти до вмісту</a>
 
 <header class="nav" data-nav>
   <div class="nav__inner">
-    <a class="nav__logo nav__logo--icon" href="/" data-page-link aria-label="Taiyo — на головну">
+    <a class="nav__logo nav__logo--icon" href="/" data-page-link aria-label="Taiyo: на головну">
       <svg viewBox="0 0 2000 2000" aria-hidden="true"><polygon points="1000,510 1420,755 1420,1000 1108,818 1108,1364 892,1490 892,818 580,1000 580,755" fill="currentColor"/></svg>
     </a>
     <a class="nav__who u-mono" href="/#about" data-page-link>WHO IS TAIYO</a>
+    <div class="lang" role="group" aria-label="Мова сайту">
+      <span class="lang__slider" aria-hidden="true"></span>
+      <a class="lang__opt is-on" href="/ftl/" data-lang="uk" aria-current="true" lang="uk" hreflang="uk">UA</a>
+      <a class="lang__opt" href="/en/ftl/" data-lang="en" lang="en" hreflang="en">EN</a>
+    </div>
     <a class="btn btn--sm btn--primary nav__cta" data-magnetic href="/#contact" data-page-link>Контакти</a>
   </div>
 </header>
@@ -60,13 +92,62 @@
   <section class="case">
     <div class="u-container">
       <a class="case__back u-mono" href="/#projects" data-page-link><span aria-hidden="true">←</span> Всі проєкти</a>
-      <p class="u-mono u-eyebrow" data-reveal>На підході</p>
-      <h1 data-type-in>Сайт школи</h1>
-      <p class="case__lead" data-reveal data-reveal-delay="1">
-        Оновлюю дизайн. Більше поки нічого — проєкт іще в роботі.
-      </p>
+      <h1 data-type-in>Сайт ліцею</h1>
+      <p class="case__lead" data-reveal data-reveal-delay="1">Фізико-технічний ліцей в Івано-Франківську. Старий сайт працював на Joomla 2.5, яку перестали оновлювати ще 2014 року. Тепер там власна система з панеллю, і сайт уже запущено.</p>
       <div class="card__actions" data-reveal data-reveal-delay="2">
-        <p class="u-mono teaser__state">Статус: у розробці — кейс і адреса зʼявляться після запуску</p>
+        <a class="btn btn--primary" data-magnetic href="https://ftl.if.ua/" target="_blank" rel="noopener">ftl.if.ua <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="result">
+    <div class="u-container">
+      <h2 class="section__title" data-reveal>Потягни лінію</h2>
+      <div class="compare" data-compare data-reveal data-reveal-delay="1">
+        <img src="/assets/img/ftl-after.jpg" width="1280" height="800" alt="Новий сайт ліцею: бічне меню, дві фотографії корпусів, емблема і назва ліцею на світлому тлі">
+        <img class="compare__before" src="/assets/img/ftl-before.jpg" width="1280" height="800" alt="Старий сайт ліцею: шапка з прапором, фото директора, щільний текст і меню з тінями">
+        <input type="range" min="0" max="100" value="50" aria-label="Межа між старим і новим сайтом">
+        <span class="compare__line" aria-hidden="true"><span class="compare__grip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6-6 6 6 6"/><path d="m15 6 6 6-6 6"/></svg></span></span>
+      </div>
+      <p class="compare-legend"><span><b>Було</b> Joomla 2.5</span><span><b>Стало</b> листопад 2026</span></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="u-container">
+      <h2 class="section__title" data-reveal>Що змінилося</h2>
+      <div class="pairs">
+        <article class="pair" data-reveal data-reveal-delay="1">
+          <div class="pair__tag u-mono">Було</div>
+          <h3>Joomla, яка давно застаріла</h3>
+          <p>Версія без оновлень із 2014 року, що працює лише на старому PHP 5. Шапка, тіні й щільний текст із минулого десятиліття.</p>
+        </article>
+        <article class="pair" data-reveal data-reveal-delay="2">
+          <div class="pair__tag u-mono">Стало</div>
+          <h3>Власна система на PHP</h3>
+          <p>Панель із конструктором блоків: сторінки й новини редагуються без коду. Сітка підлаштовується під телефон.</p>
+        </article>
+        <article class="pair" data-reveal data-reveal-delay="3">
+          <div class="pair__tag u-mono">Лишилось</div>
+          <h3>Усе, до чого звикли</h3>
+          <p>Розділи старого меню з тими самими назвами і лічильник відвідувачів, який рахує далі: понад 1,6 мільйона.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="u-container">
+      <h2 class="section__title" data-reveal>На телефоні</h2>
+      <div class="phones">
+        <figure data-reveal data-reveal-delay="1">
+          <img src="/assets/img/ftl-phone-before.jpg" width="440" height="790" loading="lazy" alt="Старий сайт на телефоні: сторінка не вміщається в ширину екрана, текст обрізаний">
+          <figcaption><b>Було</b>Сторінка ширша за екран, текст обрізається.</figcaption>
+        </figure>
+        <figure data-reveal data-reveal-delay="2">
+          <img src="/assets/img/ftl-phone-after.jpg" width="440" height="790" loading="lazy" alt="Новий сайт на телефоні: фото, емблема і назва ліцею вміщаються в екран">
+          <figcaption><b>Стало</b>Усе вміщається, меню ховається в кнопку.</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -74,7 +155,7 @@
   <section class="cta" id="next">
     <div class="u-container">
       <h2 data-reveal>Потрібен сайт, який не соромно показати?</h2>
-      <p data-reveal data-reveal-delay="1">Пиши в Discord або на пошту — розберемося, що саме тобі треба.</p>
+      <p data-reveal data-reveal-delay="1">Пиши в Discord або на пошту, розберемося, що саме тобі треба.</p>
       <div class="cta__actions" data-reveal data-reveal-delay="2">
         <a class="btn btn--primary" data-magnetic href="/#contact" data-page-link>Контакти <span aria-hidden="true">→</span></a>
         <a class="btn" data-magnetic href="https://spbt.pp.ua" target="_blank" rel="noopener">spbt.pp.ua <span aria-hidden="true">↗</span></a>
@@ -92,7 +173,6 @@
     </div>
     <nav class="footer__nav" aria-label="Навігація у футері">
       <a href="/#projects">Проєкти</a>
-      <a href="/#spbt">SPBT</a>
       <a href="/#contact">Контакти</a>
       <a href="https://spbt.pp.ua" target="_blank" rel="noopener">spbt.pp.ua <span aria-hidden="true">↗</span></a>
       <a href="https://discord.com/invite/b8QpW8W6fR" target="_blank" rel="noopener">Discord <span aria-hidden="true">↗</span></a>

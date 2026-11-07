@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>
+  document.documentElement.classList.add('js');
+  window.__taiyoFailsafe = setTimeout(function () {
+    document.documentElement.classList.add('js-stalled');
+  }, 2500);
+</script>
+<script>
+  /* Клік по капсулі запам'ятовується і тут: інакше український браузер, який
+     перейшов на EN, повертали б назад при наступному заході на корінь. */
+  (function () {
+    document.addEventListener('click', function (e) {
+      var opt = e.target && e.target.closest && e.target.closest('[data-lang]');
+      if (!opt) return;
+      try { window.localStorage.setItem('taiyo-lang', opt.getAttribute('data-lang')); } catch (err) {}
+    });
+  })();
+</script>
+<title>The Physics and Technology Lyceum site: before and after</title>
+<meta name="description" content="How the Physics and Technology Lyceum site moved from Joomla 2.5 to a custom system with its own panel. The old and new site compared on desktop and on a phone.">
+<meta name="author" content="Taiyo Asano">
+<meta name="theme-color" content="#050807">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://taiyo.is-a.dev/en/ftl/">
+<link rel="alternate" hreflang="uk" href="https://taiyo.is-a.dev/ftl/">
+<link rel="alternate" hreflang="en" href="https://taiyo.is-a.dev/en/ftl/">
+<link rel="alternate" hreflang="x-default" href="https://taiyo.is-a.dev/ftl/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Taiyo Asano">
+<meta property="og:title" content="The Physics and Technology Lyceum site: before and after">
+<meta property="og:description" content="How the Physics and Technology Lyceum site moved from Joomla 2.5 to a custom system with its own panel. The old and new site compared on desktop and on a phone.">
+<meta property="og:url" content="https://taiyo.is-a.dev/en/ftl/">
+<meta property="og:image" content="https://taiyo.is-a.dev/assets/img/ftl-after.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Physics and Technology Lyceum site: before and after">
+<meta name="twitter:description" content="How the Physics and Technology Lyceum site moved from Joomla 2.5 to a custom system with its own panel. The old and new site compared on desktop and on a phone.">
+<meta name="twitter:image" content="https://taiyo.is-a.dev/assets/img/ftl-after.jpg">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/layout.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<link rel="stylesheet" href="/assets/css/taiyo.css">
+<script type="module" src="/assets/js/site.js"></script>
+<script type="module" src="/assets/js/compare.js"></script>
+</head>
+<body>
+<canvas id="bg-grid" aria-hidden="true"></canvas>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+<div class="page-wipe" aria-hidden="true"></div>
+
+<a class="u-sr" href="#result">Skip to content</a>
+
+<header class="nav" data-nav>
+  <div class="nav__inner">
+    <a class="nav__logo nav__logo--icon" href="/en/" data-page-link aria-label="Taiyo: home">
+      <svg viewBox="0 0 2000 2000" aria-hidden="true"><polygon points="1000,510 1420,755 1420,1000 1108,818 1108,1364 892,1490 892,818 580,1000 580,755" fill="currentColor"/></svg>
+    </a>
+    <a class="nav__who u-mono" href="/en/#about" data-page-link>WHO IS TAIYO</a>
+    <div class="lang lang--en" role="group" aria-label="Site language">
+      <span class="lang__slider" aria-hidden="true"></span>
+      <a class="lang__opt" href="/ftl/" data-lang="uk" lang="uk" hreflang="uk">UA</a>
+      <a class="lang__opt is-on" href="/en/ftl/" data-lang="en" aria-current="true" lang="en" hreflang="en">EN</a>
+    </div>
+    <a class="btn btn--sm btn--primary nav__cta" data-magnetic href="/en/#contact" data-page-link>Contacts</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="case">
+    <div class="u-container">
+      <a class="case__back u-mono" href="/en/#projects" data-page-link><span aria-hidden="true">←</span> All projects</a>
+      <h1 data-type-in>A lyceum site</h1>
+      <p class="case__lead" data-reveal data-reveal-delay="1">The Physics and Technology Lyceum in Ivano-Frankivsk, Ukraine. Its old site ran on Joomla 2.5, which stopped getting updates back in 2014. It now runs on a custom system with its own panel, and it is live.</p>
+      <div class="card__actions" data-reveal data-reveal-delay="2">
+        <a class="btn btn--primary" data-magnetic href="https://ftl.if.ua/" target="_blank" rel="noopener">ftl.if.ua <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="result">
+    <div class="u-container">
+      <h2 class="section__title" data-reveal>Drag the line</h2>
+      <div class="compare" data-compare data-reveal data-reveal-delay="1">
+        <img src="/assets/img/ftl-after.jpg" width="1280" height="800" alt="The new lyceum site: side menu, two building photos, the emblem and the lyceum name on a light background">
+        <img class="compare__before" src="/assets/img/ftl-before.jpg" width="1280" height="800" alt="The old lyceum site: a flag header, the director's photo, dense text and a shadowed menu">
+        <input type="range" min="0" max="100" value="50" aria-label="Divider between the old and new site">
+        <span class="compare__line" aria-hidden="true"><span class="compare__grip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6-6 6 6 6"/><path d="m15 6 6 6-6 6"/></svg></span></span>
+      </div>
+      <p class="compare-legend"><span><b>Before</b> Joomla 2.5</span><span><b>After</b> November 2026</span></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="u-container">
+      <h2 class="section__title" data-reveal>What changed</h2>
+      <div class="pairs">
+        <article class="pair" data-reveal data-reveal-delay="1">
+          <div class="pair__tag u-mono">Before</div>
+          <h3>A long-outdated Joomla</h3>
+          <p>A version with no updates since 2014 that runs only on old PHP 5. A header, shadows and dense text from the last decade.</p>
+        </article>
+        <article class="pair" data-reveal data-reveal-delay="2">
+          <div class="pair__tag u-mono">After</div>
+          <h3>A custom PHP system</h3>
+          <p>A panel with a block builder, so pages and news are edited without code. The layout adapts to phones.</p>
+        </article>
+        <article class="pair" data-reveal data-reveal-delay="3">
+          <div class="pair__tag u-mono">Kept</div>
+          <h3>Everything people knew</h3>
+          <p>The sections of the old menu under the same names, and a visitor counter that keeps going: over 1.6 million.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="u-container">
+      <h2 class="section__title" data-reveal>On a phone</h2>
+      <div class="phones">
+        <figure data-reveal data-reveal-delay="1">
+          <img src="/assets/img/ftl-phone-before.jpg" width="440" height="790" loading="lazy" alt="The old site on a phone: the page is wider than the screen and text is cut off">
+          <figcaption><b>Before</b>The page is wider than the screen and text gets cut off.</figcaption>
+        </figure>
+        <figure data-reveal data-reveal-delay="2">
+          <img src="/assets/img/ftl-phone-after.jpg" width="440" height="790" loading="lazy" alt="The new site on a phone: photos, emblem and lyceum name fit the screen">
+          <figcaption><b>After</b>Everything fits, and the menu folds into a button.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="next">
+    <div class="u-container">
+      <h2 data-reveal>Need a site you are not embarrassed to show?</h2>
+      <p data-reveal data-reveal-delay="1">Write on Discord or by email and we will work out what you need.</p>
+      <div class="cta__actions" data-reveal data-reveal-delay="2">
+        <a class="btn btn--primary" data-magnetic href="/en/#contact" data-page-link>Contacts <span aria-hidden="true">→</span></a>
+        <a class="btn" data-magnetic href="https://spbt.pp.ua/en/" target="_blank" rel="noopener">spbt.pp.ua <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="u-container footer__inner">
+    <div class="footer__brand">
+      <p><strong>Taiyo Asano</strong></p>
+      <p class="footer__meta u-mono">taiyo.is-a.dev · Ukraine · 2026</p>
+    </div>
+    <nav class="footer__nav" aria-label="Footer navigation">
+      <a href="/en/#projects">Projects</a>
+      <a href="/en/#contact">Contacts</a>
+      <a href="https://spbt.pp.ua/en/" target="_blank" rel="noopener">spbt.pp.ua <span aria-hidden="true">↗</span></a>
+      <a href="https://discord.com/invite/b8QpW8W6fR" target="_blank" rel="noopener">Discord <span aria-hidden="true">↗</span></a>
+    </nav>
+    <p class="footer__powered">
+      Powered by <a href="https://spbt.pp.ua/en/" target="_blank" rel="noopener">SPBT</a> <span>&copy;2025-2026</span>
+    </p>
+  </div>
+</footer>
+</body>
+</html>

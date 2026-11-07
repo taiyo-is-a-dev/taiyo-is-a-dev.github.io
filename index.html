@@ -14,6 +14,34 @@
     document.documentElement.classList.add('js-stalled');
   }, 2500);
 </script>
+<script>
+  /* Мова. Той самий порядок, що й на spbt.pp.ua: явний клік по UA/EN важить
+     більше за мову браузера, а мова браузера більше за «лишитися». Лише
+     українські сторінки перенаправляють: /en/ люди пересилають, і вона мусить
+     відкриватися англійською на будь-якому браузері. Inline і ES5, бо модуль
+     відкладений і українська сторінка встигла б намалюватися. */
+  (function () {
+    var KEY = 'taiyo-lang';
+    var store = null;
+    try { store = window.localStorage; } catch (err) {}
+    document.addEventListener('click', function (e) {
+      var opt = e.target && e.target.closest && e.target.closest('[data-lang]');
+      if (!opt || !store) return;
+      try { store.setItem(KEY, opt.getAttribute('data-lang')); } catch (err) {}
+    });
+    var saved = null;
+    try { saved = store && store.getItem(KEY); } catch (err) {}
+    if (saved === 'uk') return;
+    if (saved !== 'en') {
+      if (document.referrer.indexOf(location.origin) === 0) return;
+      var langs = navigator.languages || [navigator.language || ''];
+      for (var i = 0; i < langs.length; i += 1) {
+        if (/^uk\b/i.test(String(langs[i]))) return;
+      }
+    }
+    location.replace('/en/' + location.search + location.hash);
+  })();
+</script>
 <title>Taiyo Asano — Discord-боти, веб, Unity, Blender</title>
 <meta name="description" content="Портфоліо Таійо: багатомодульні Discord-боти з веб-панелями, сайти під ключ, ігри на Unity та 3D у Blender. Від першого полігону до продакшн-деплою.">
 <meta name="author" content="Taiyo Asano">
@@ -39,6 +67,7 @@
 <link rel="stylesheet" href="/assets/css/base.css">
 <link rel="stylesheet" href="/assets/css/layout.css">
 <link rel="stylesheet" href="/assets/css/components.css">
+<link rel="stylesheet" href="/assets/css/taiyo.css">
 <script type="module" src="/assets/js/site.js"></script>
 </head>
 <body>
@@ -59,8 +88,8 @@
 
     <div class="lang" role="group" aria-label="Мова сайту">
       <span class="lang__slider" aria-hidden="true"></span>
-      <a class="lang__opt is-on" href="/" aria-current="true" lang="uk" hreflang="uk">UA</a>
-      <a class="lang__opt" href="/en/" lang="en" hreflang="en">EN</a>
+      <a class="lang__opt is-on" href="/" data-lang="uk" aria-current="true" lang="uk" hreflang="uk">UA</a>
+      <a class="lang__opt" href="/en/" data-lang="en" lang="en" hreflang="en">EN</a>
     </div>
 
     <a class="btn btn--sm btn--primary nav__cta" data-magnetic href="#contact">Контакти</a>
@@ -159,13 +188,13 @@
   </section>
 
   <!-- ═══ 04–06 · Власні проєкти, горизонтально ══════════════════════
-       П'ять проєктів, що належать мені, їдуть справа наліво. Секція висока,
+       Три власні проєкти їдуть справа наліво. Секція висока,
        всередині sticky-сцена, а рух дає translateX від прогресу звичайної
        вертикальної прокрутки — тобто це справжній скрол, а не перехват
-       колеса: скролбар, клавіші й пошук по сторінці працюють. П'ять
-       невидимих якорів дають scroll-snap точки, по одній на проєкт; їхню
+       колеса: скролбар, клавіші й пошук по сторінці працюють. Три
+       невидимі якорі дають scroll-snap точки, по одній на проєкт; їхню
        кількість задає --pj-n на секції, а components.css рахує з неї решту.     -->
-  <section class="pjtrack" id="projects" aria-labelledby="projects-title" data-pjtrack style="--pj-n:5">
+  <section class="pjtrack" id="projects" aria-labelledby="projects-title" data-pjtrack style="--pj-n:3">
     <!-- Заголовок секції, який не займає жодного пікселя. `.u-sr`
          (base.css:195) — це position:absolute, тож sticky-сцена, якорі
          й прогрес доріжки лишаються рівно там, де були.
@@ -174,12 +203,10 @@
          зсуває панелі вниз рівно на свою висоту й стільки ж зрізає знизу.
          Видиме обрамлення несуть надрядки панелей і підпис
          `.pjtrack__hint`. -->
-    <h2 class="u-sr" id="projects-title">П'ять власних проєктів, які я зробив і веду</h2>
+    <h2 class="u-sr" id="projects-title">Три власні проєкти, які я зробив і веду</h2>
     <span class="pjtrack__anchor pjtrack__anchor--1" aria-hidden="true"></span>
     <span class="pjtrack__anchor pjtrack__anchor--2" aria-hidden="true"></span>
     <span class="pjtrack__anchor pjtrack__anchor--3" aria-hidden="true"></span>
-    <span class="pjtrack__anchor pjtrack__anchor--4" aria-hidden="true"></span>
-    <span class="pjtrack__anchor pjtrack__anchor--5" aria-hidden="true"></span>
 
     <div class="pjtrack__stage">
       <div class="pjtrack__row" data-pjrow>
@@ -187,7 +214,7 @@
         <article class="pjslide pj" id="tano">
           <div class="u-container pj__inner">
       <div class="pj__copy">
-        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 01 / 05</p>
+        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 01 / 03</p>
         <h3 class="pj__title" data-reveal data-reveal-delay="1">TANO</h3>
         <p class="pj__lead" data-reveal data-reveal-delay="2">
           Discord-бот, який виріс в екосистему: штучний інтелект, музика, модерація,
@@ -217,7 +244,7 @@
         <article class="pjslide pj" id="spbt-db">
           <div class="u-container pj__inner">
       <div class="pj__copy">
-        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 02 / 05</p>
+        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 02 / 03</p>
         <h3 class="pj__title" data-reveal data-reveal-delay="1">SPBT_DB</h3>
         <p class="pj__lead" data-reveal data-reveal-delay="2">
           Вбудована база даних для Node.js, яку я написав для TANO замість
@@ -239,123 +266,47 @@
           </div>
         </article>
 
-        <article class="pjslide pj" id="spbt">
+        <article class="pjslide pj" id="sites">
           <div class="u-container pj__inner">
-      <div class="pj__copy">
-        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 03 / 05</p>
-        <h3 class="pj__title" data-reveal data-reveal-delay="1">SPBT</h3>
-        <p class="pj__lead" data-reveal data-reveal-delay="2">
-          Small Projects by Taiyo — місце, куди звертаються за роботою. Ця сторінка
-          про мене, а там зібрано, що я <strong>готовий зробити вам</strong>:
-          боти, сайти, інтерактивні презентації, 3D. З прикладами й умовами.
-        </p>
-        <ul class="chips u-mono" data-reveal data-reveal-delay="3">
-          <li>Discord-боти</li><li>Сайти під ключ</li><li>Презентації</li><li>Unity</li><li>Blender</li>
-        </ul>
-        <div class="card__actions" data-reveal data-reveal-delay="4">
-          <a class="btn btn--primary" data-magnetic href="https://spbt.pp.ua" target="_blank" rel="noopener">spbt.pp.ua <span aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-      <div class="pj__visual pj__visual--type" data-reveal data-reveal-delay="2" aria-hidden="true">
-        <span class="pj__wordmark">SPBT</span>
-        <span class="pj__wordsub u-mono">Small Projects by Taiyo</span>
-      </div>
-          </div>
-        </article>
-
-        <article class="pjslide pj" id="site">
-          <div class="u-container pj__inner">
-      <div class="pj__copy">
-        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 04 / 05</p>
-        <h3 class="pj__title" data-reveal data-reveal-delay="1">Цей сайт</h3>
-        <p class="pj__lead" data-reveal data-reveal-delay="2">
-          Статика без жодної залежності: ні фреймворку, ні збірки, ні CDN.
-          Шрифти самохостяться, 3D-емблема намальована на 2D-канві руками,
-          а зелений тест не пускає в реліз ані чужого домену, ані кольору
-          поза палітрою.
-        </p>
-        <dl class="stats" data-reveal data-reveal-delay="3">
-          <div><dt class="u-mono">Залежностей</dt><dd data-counter="0">0</dd></div>
-          <div><dt class="u-mono">Тестів</dt><dd data-counter="21">21</dd></div>
-          <div><dt class="u-mono">Кольорів у палітрі</dt><dd data-counter="6">6</dd></div>
-        </dl>
-        <ul class="chips u-mono" data-reveal data-reveal-delay="4">
-          <li>Vanilla JS</li><li>Canvas 3D</li><li>GitHub Pages</li><li>is-a.dev</li>
-        </ul>
-      </div>
-      <div class="pj__visual pj__visual--type" data-reveal data-reveal-delay="2" aria-hidden="true">
-        <span class="pj__wordmark">taiyo</span>
-        <span class="pj__wordsub u-mono">.is-a.dev</span>
-      </div>
-          </div>
-        </article>
-
-        <article class="pjslide pj" id="class-group">
-          <div class="u-container pj__inner">
-      <div class="pj__copy">
-        <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 05 / 05</p>
-        <h3 class="pj__title" data-reveal data-reveal-delay="1">Сайт класної групи</h3>
-        <p class="pj__lead" data-reveal data-reveal-delay="2">
-          Застосунок мого класу під телефон: розклад, чергування, ДЗ, збори
-          коштів, новини, вхід через Telegram. Код відкритий.
-        </p>
-        <ul class="chips u-mono" data-reveal data-reveal-delay="3">
-          <li>Next.js</li><li>TypeScript</li><li>Prisma</li><li>PostgreSQL</li><li>Telegram-бот</li>
-        </ul>
-        <div class="card__actions" data-reveal data-reveal-delay="4">
-          <a class="btn btn--primary" data-magnetic href="https://github.com/DanyloKob/class-group-site" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-      <!-- 2:1, як знімки TANO і SPBT_DB, а не 4:3 з components.css. На 760x700
-           панель 4:3 зсувала кнопку GitHub нижче межі, з якої її показує
-           reveal, і кнопка лишалася невидимою. Правити спільний CSS не можна. -->
-      <div class="pj__visual pj__visual--type" style="aspect-ratio:2/1" data-reveal data-reveal-delay="2" aria-hidden="true">
-        <span class="pj__wordmark">class</span>
-        <span class="pj__wordsub u-mono">group site</span>
-      </div>
+            <div class="pj__copy">
+              <p class="u-mono u-eyebrow" data-reveal>Мій проєкт — 03 / 03</p>
+              <h3 class="pj__title" data-reveal data-reveal-delay="1">Сайти</h3>
+              <p class="pj__lead" data-reveal data-reveal-delay="2">Сайт компанії SPBT, це портфоліо і застосунок мого класу. Усі три зробив і веду сам.</p>
+              <div class="card__actions" data-reveal data-reveal-delay="3">
+                <a class="btn btn--primary" data-magnetic href="https://spbt.pp.ua" target="_blank" rel="noopener">spbt.pp.ua <span aria-hidden="true">↗</span></a>
+                <a class="btn" data-magnetic href="https://github.com/DanyloKob/class-group-site" target="_blank" rel="noopener" aria-label="Код сайту класу на GitHub">GitHub <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+            <div class="pj__visual trio" data-reveal data-reveal-delay="2">
+              <a class="trio__item trio__item--lead" href="https://spbt.pp.ua" target="_blank" rel="noopener">
+                <span class="trio__frame"><img src="/assets/img/site-spbt.jpg" width="960" height="600" loading="lazy" alt="Головна сторінка spbt.pp.ua: заголовок «Малі проєкти, живий продакшн» і зелена емблема на темному тлі"></span>
+                <span class="trio__name">SPBT <small>сайт компанії</small></span>
+              </a>
+              <div class="trio__item">
+                <span class="trio__frame"><img src="/assets/img/site-portfolio.jpg" width="960" height="600" loading="lazy" alt="Головна сторінка цього портфоліо: заголовок «Створюю все, що запускається»"></span>
+                <span class="trio__name">Цей сайт</span>
+              </div>
+              <a class="trio__item" href="https://github.com/DanyloKob/class-group-site" target="_blank" rel="noopener">
+                <span class="trio__frame"><img src="/assets/img/site-class.jpg" width="960" height="600" loading="lazy" alt="Екран входу застосунку класу L-23 LIFE: емблема і кнопка входу через Telegram"></span>
+                <span class="trio__name">Сайт групи</span>
+              </a>
+            </div>
           </div>
         </article>
 
       </div><!-- /.pjtrack__row -->
 
       <div class="pjtrack__dots" data-pjdots aria-hidden="true">
-        <span class="is-on"></span><span></span><span></span><span></span><span></span>
+        <span class="is-on"></span><span></span><span></span>
       </div>
-      <p class="pjtrack__hint u-mono" aria-hidden="true">П'ять власних проєктів — гортай</p>
+      <p class="pjtrack__hint u-mono" aria-hidden="true">Три власні проєкти, гортай</p>
     </div><!-- /.pjtrack__stage -->
   </section>
 
   <!-- ═══ 07 · Не свої проєкти ═══════════════════════════════════════
-       Тут було дві секції, і обидві були слабкі. #ftl віддавав цілий
-       екран одному незапущеному проєкту й казав «ще не готово» чотири
-       рази поспіль: надрядок, h2, штамп на знімку, рядок статусу.
-       #more під назвою «Ще роблю це» повторював Unity та Blender майже
-       дослівно з «Чотирьох напрямів» двома екранами вище — унікальним
-       у ньому був один пункт, презентації, і саме він єдиний має
-       названу замовницю та сторінку кейса.
-
-       Тепер це один слайд із власним предметом. Не «що я вмію» — це вже
-       сказано в напрямах, — а «що я роблю не для себе»: трек вище тримає
-       мої власні проєкти, тут лежить робота на інших.
-
-       Дві речі в заголовку навмисні. Час теперішній: «зроблено для інших»
-       суперечило б рядку «ще в роботі» чотирма рядками нижче — тій самій
-       поломці, через яку на spbt.pp.ua переписували лід героя. І слова
-       «на замовлення» тут немає: замовниця названа лише в презентаціях,
-       а про сайт школи ніде не сказано, що це оплачена робота.
-
-       Знімок сайту школи прибрано навмисно: він розмитий за задумом,
-       тобто не несе жодної інформації, а був найбільшим об'єктом на
-       екрані. Сам файл лишається в assets/img — на день запуску його є
-       куди повернути, і тест tools/check.test.mjs усе одно вимагає, щоб
-       він був на диску.
-
-       Два сліди лишаються знаними, а не забутими. layout.css:309 досі
-       пояснює обмеження padding-block через «#ftl 821px tall in an 800px
-       viewport» — цього id більше немає, але правити той файл не можна:
-       base, layout і components побайтово однакові зі spbt-site. І
-       правила `.teaser*` у components.css лишаються без розмітки на
-       обох сайтах до дня запуску.                                   -->
+       Один слайд із власним предметом: трек вище тримає мої проєкти, тут
+       робота на інших. Слова «на замовлення» немає навмисно: замовниця
+       названа лише в презентаціях.                                       -->
   <section class="section snap" id="beyond">
     <div class="u-container">
       <p class="u-mono u-eyebrow" data-reveal>Не свої проєкти</p>
@@ -379,11 +330,12 @@
           </div>
         </article>
         <article class="minor__item" data-reveal data-reveal-delay="2">
-          <h3>Сайт школи</h3>
-          <p>Оновлюю дизайн. Проєкт ще в роботі, тому ні адреси, ні подробиць
-             тут поки немає.</p>
+          <h3>Сайт ліцею</h3>
+          <p>Замінив сайт Фізико-технічного ліцею на Joomla 2.5 власною системою
+             з панеллю. Запущено на ftl.if.ua.</p>
           <div class="card__actions">
-            <a class="btn btn--sm" data-magnetic href="/ftl/" data-page-link aria-label="Кейс сайту школи">Кейс <span aria-hidden="true">→</span></a>
+            <a class="btn btn--sm" data-magnetic href="/ftl/" data-page-link aria-label="Кейс сайту ліцею">Кейс <span aria-hidden="true">→</span></a>
+            <a class="btn btn--sm" data-magnetic href="https://ftl.if.ua/" target="_blank" rel="noopener">ftl.if.ua <span aria-hidden="true">↗</span></a>
           </div>
         </article>
       </div>

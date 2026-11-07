@@ -9,12 +9,7 @@ export const ALLOWED_HOSTS = [
   'taiyo.is-a.dev',
   'spbt.pp.ua',
   'github.com',   /* the open-source SPBT_DB repo */
-  /* The school site's host is deliberately absent, and deliberately not named
-     here either. It is not launched, so no page may link to it yet — leaving
-     the host out of this list turns that decision into something the test
-     suite enforces rather than something a future edit can quietly undo.
-     Naming it in a comment would have defeated the point: this file is public.
-     Add the host on launch day, with the rest of the case. */
+  'ftl.if.ua',    /* the lyceum site, launched November 2026 */
   'www.w3.org',
 ];
 

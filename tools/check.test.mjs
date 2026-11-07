@@ -67,12 +67,7 @@ test('every page carries required metadata', () => {
        costs nothing and the distinguishing words go first; meanwhile those
        strings were what a search result, a bookmark and a shared history entry
        actually showed, and the two roots shipped the same string in two
-       different languages. This repo's 404.html already shipped
-       title === og:title; the rest now match it, with one deliberate
-       exception: /ftl/ keeps a title that names no project. The school site is
-       unlaunched and <title> is what a search result prints as its headline,
-       so og:title stays descriptive because nobody shares that page. Restore
-       the pairing on launch day, with the rest of the case. */
+       different languages. */
     assert.match(html, /<title>[^<]{3,}<\/title>/, `${file}: title`);
     assert.match(html, /name="description"\s+content="[^"]{40,}"/, `${file}: description`);
     assert.match(html, /property="og:image"\s+content="[^"]+"/, `${file}: og:image`);
@@ -180,6 +175,17 @@ test('the project track counts its own panels', () => {
   }
 });
 
+test('only Ukrainian pages redirect, and an explicit choice is remembered', () => {
+  for (const [page, target] of [['index.html', '/en/'], ['ftl/index.html', '/en/ftl/']]) {
+    const html = readFileSync(join(ROOT, page), 'utf8');
+    assert.ok(html.includes(`location.replace('${target}'`), `${page}: no language routing`);
+    assert.ok(html.includes('taiyo-lang'), `${page}: the choice is not remembered`);
+  }
+  for (const page of ['en/index.html', 'en/ftl/index.html']) {
+    assert.ok(!readFileSync(join(ROOT, page), 'utf8').includes('location.replace'), `${page} must never redirect`);
+  }
+});
+
 test('404 page is excluded from indexing', () => {
   assert.match(readHtml('404.html', ROOT), /name="robots"\s+content="noindex"/);
 });
@@ -224,7 +230,13 @@ test('image assets exist and stay within budget (KB)', () => {
   const budget = {
     'avatar.png': 260,
     'tano-banner.png': 300,
-    'ftl-shot.jpg': 140,
+    'ftl-before.jpg': 170,
+    'ftl-after.jpg': 140,
+    'ftl-phone-before.jpg': 90,
+    'ftl-phone-after.jpg': 90,
+    'site-spbt.jpg': 60,
+    'site-portfolio.jpg': 60,
+    'site-class.jpg': 40,
     'deck-shot.jpg': 140,
     'tano-shot.jpg': 140,
     'spbt-db-shot.jpg': 140,
